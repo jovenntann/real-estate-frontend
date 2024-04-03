@@ -9,6 +9,8 @@ pnpm dlx nuxi@latest init tappy
 
 https://www.shadcn-vue.com/docs/installation/nuxt.html
 https://www.youtube.com/watch?v=azs0ov_SbOA&ab_channel=Codewithguillaume
+https://github.com/radix-vue/shadcn-vue/tree/dev/apps/www/src/examples/dashboard
+https://www.youtube.com/watch?v=vs-vfc9nt0k&ab_channel=AndreMadarang
 
 # ShadCN
 
