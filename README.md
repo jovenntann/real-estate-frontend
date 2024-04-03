@@ -1,10 +1,3 @@
-# Installation
-```
-curl -fsSL https://get.pnpm.io/install.sh | sh -
-source /Users/joventan/.zshrc
-pnpm dlx nuxi@latest init tappy
-```
-
 # Nuxt 3 Minimal Starter
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
