@@ -23,7 +23,7 @@ const colorMode = useColorMode()
           <nav class="grid items-start px-2 text-sm font-medium lg:px-4">
             <a
               href="/"
-              class="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              class="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
             >
               <Home class="h-4 w-4" />
               Dashboard
@@ -40,7 +40,7 @@ const colorMode = useColorMode()
             </a>
             <a
               href="#"
-              class="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
+              class="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
             >
               <Package class="h-4 w-4" />
               Products
@@ -103,14 +103,14 @@ const colorMode = useColorMode()
               </a>
               <a
                 href="#"
-                class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                class="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
               >
                 <Home class="h-5 w-5" />
                 Dashboard
               </a>
               <a
                 href="#"
-                class="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
+                class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
               >
                 <ShoppingCart class="h-5 w-5" />
                 Orders
