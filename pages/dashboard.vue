@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { Activity, ArrowUpRight, CircleUser, CreditCard, DollarSign, Menu, Package2, Search, Users } from 'lucide-vue-next';
 import { Bell, Home, ShoppingCart, Package, LineChart } from 'lucide-vue-next'
-
 import { Icon } from '@iconify/vue'
-import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 const colorMode = useColorMode()
-
 </script>
 
 <template>
