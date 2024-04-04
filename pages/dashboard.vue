@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { Activity, ArrowUpRight, CircleUser, CreditCard, DollarSign, Menu, Package2, Search, Users } from 'lucide-vue-next';
 import { Bell, Home, ShoppingCart, Package, LineChart } from 'lucide-vue-next'
+
+import { Icon } from '@iconify/vue'
+import { Button } from '@/components/ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+const colorMode = useColorMode()
+
 </script>
 
 <template>
@@ -184,6 +190,27 @@ import { Bell, Home, ShoppingCart, Package, LineChart } from 'lucide-vue-next'
             <DropdownMenuItem>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <DropdownMenu>
+        <DropdownMenuTrigger as-child>
+          <Button variant="outline">
+            <Icon icon="radix-icons:moon" class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <Icon icon="radix-icons:sun" class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <span class="sr-only">Toggle theme</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem @click="colorMode.preference = 'light'">
+            Light
+          </DropdownMenuItem>
+          <DropdownMenuItem @click="colorMode.preference = 'dark'">
+            Dark
+          </DropdownMenuItem>
+          <DropdownMenuItem @click="colorMode.preference = 'system'">
+            System
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
       </header>
       <main class="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
       <div class="flex flex-col items-start">

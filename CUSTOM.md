@@ -43,3 +43,7 @@ Ok to proceed? (y) y
 ```
 npx shadcn-vue@latest add button
 ```
+
+# Darkmode
+```
+https://www.shadcn-vue.com/docs/dark-mode/nuxt.html
