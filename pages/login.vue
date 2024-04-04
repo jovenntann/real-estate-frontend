@@ -11,7 +11,7 @@ const login = () => {
   setTimeout(() => {
     isLoading.value = false
     router.push('/dashboard')
-  }, 4000)
+  }, 2500)
 }
 </script>
 
