@@ -517,3 +517,4 @@ import { Bell, Home, ShoppingCart, Package, LineChart } from 'lucide-vue-next'
     </div>
   </div>
 </template>
+

@@ -1,5 +1,18 @@
 <script setup lang="ts">
+import { Loader2 } from 'lucide-vue-next'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
+const isLoading = ref(false)
+const router = useRouter()
+
+const login = () => {
+  isLoading.value = true
+  setTimeout(() => {
+    isLoading.value = false
+    router.push('/dashboard')
+  }, 2000)
+}
 </script>
 
 <template>
@@ -36,8 +49,10 @@
             </div>
             <Input id="password" type="password" required />
           </div>
-          <Button type="submit" class="w-full">
-            Login
+          <Button type="submit" class="w-full" :disabled="isLoading" @click="login">
+            <Loader2 v-if="isLoading" class="w-4 h-4 mr-2 animate-spin" />
+            <span v-if="!isLoading">Login</span>
+            <span v-else></span>
           </Button>
           <Button variant="outline" class="w-full">
             Login with Google
