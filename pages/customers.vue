@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import {
-  Activity,
-  ArrowUpRight,
   Bell,
-  ChevronLeft,
-  ChevronRight,
   CircleUser,
   Copy,
   CreditCard,
-  DollarSign,
   Menu,
   File,
   Home,
@@ -17,13 +12,10 @@ import {
   MoreVertical,
   Package,
   Package2,
-  PanelLeft,
   Search,
-  Settings,
   ShoppingCart,
   Truck,
   Users,
-  Users2,
 } from 'lucide-vue-next'
 
 import { Icon } from '@iconify/vue'
@@ -739,7 +731,7 @@ const { data: products } = await useFetch("https://fakestoreapi.com/products");
                 </PaginationList>
               </Pagination>
             </CardFooter>
-          </Card>
+          </Card> 
         </div>
       </main>
 
