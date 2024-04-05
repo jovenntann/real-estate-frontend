@@ -12,7 +12,7 @@ const loginFailed = ref(false)
 const login = async () => {
   loginFailed.value = false
   isLoading.value = true
-  const uri = `http://stg.pickrmusic.com/api/token/`
+  const uri = `https://stg.pickrmusic.com/api/token/`
   const body = {
     username: email.value,
     password: password.value
