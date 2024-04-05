@@ -11,8 +11,8 @@ const colorMode = useColorMode()
       <div class="flex h-full max-h-screen flex-col gap-2">
         <div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
           <a href="/" class="flex items-center gap-2 font-semibold">
-            <Package2 class="h-6 w-6" />
-            <span class="">Tappy Inc</span>
+            <Package2 class="h-6 w-6" />  
+            <span class="">Tappy Inc.</span>
           </a>
           <Button variant="outline" size="icon" class="ml-auto h-8 w-8">
             <Bell class="h-4 w-4" />
@@ -23,14 +23,24 @@ const colorMode = useColorMode()
           <nav class="grid items-start px-2 text-sm font-medium lg:px-4">
             <a
               href="/"
-              class="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
+              class="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 mt-4 mb-4 text-primary transition-all hover:text-primary"
             >
               <Home class="h-4 w-4" />
               Dashboard
             </a>
+            <div class="mt-4 mb-2 px-2 text-xs font-medium lg:px-4">
+              <span class="text-xs text-gray-500">LEAD MANAGEMENT</span>
+            </div>
             <a
               href="#"
-              class="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              class="flex items-center gap-3 rounded-lg px-3 py-2 mt-1 mb-1  text-muted-foreground transition-all hover:text-primary"
+            >
+              <Users class="h-4 w-4" />
+              Customers
+            </a>
+            <a
+              href="#"
+              class="flex items-center gap-3 rounded-lg px-3 py-2  mt-1 mb-1 text-muted-foreground transition-all hover:text-primary"
             >
               <ShoppingCart class="h-4 w-4" />
               Orders
@@ -40,21 +50,15 @@ const colorMode = useColorMode()
             </a>
             <a
               href="#"
-              class="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              class="flex items-center gap-3 rounded-lg px-3 py-2 mt-1 mb-1  text-muted-foreground transition-all hover:text-primary"
             >
               <Package class="h-4 w-4" />
               Products
             </a>
+
             <a
               href="#"
-              class="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-            >
-              <Users class="h-4 w-4" />
-              Customers
-            </a>
-            <a
-              href="#"
-              class="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              class="flex items-center gap-3 rounded-lg px-3 py-2 mt-1 mb-1  text-muted-foreground transition-all hover:text-primary"
             >
               <LineChart class="h-4 w-4" />
               Analytics
@@ -112,6 +116,13 @@ const colorMode = useColorMode()
                 href="#"
                 class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
               >
+                <Users class="h-5 w-5" />
+                Customers
+              </a>
+              <a
+                href="#"
+                class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+              >
                 <ShoppingCart class="h-5 w-5" />
                 Orders
                 <Badge class="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
@@ -124,13 +135,6 @@ const colorMode = useColorMode()
               >
                 <Package class="h-5 w-5" />
                 Products
-              </a>
-              <a
-                href="#"
-                class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-              >
-                <Users class="h-5 w-5" />
-                Customers
               </a>
               <a
                 href="#"
