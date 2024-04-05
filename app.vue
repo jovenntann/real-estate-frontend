@@ -1,4 +1,6 @@
 <template>
+  <!-- This is triggered by await useFetch -->
+  <NuxtLoadingIndicator color="#005b96" :height=6 /> 
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
