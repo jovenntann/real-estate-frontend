@@ -52,7 +52,7 @@ const login = async () => {
           <div v-if="loginFailed" class="grid gap-2">
             <Alert variant="destructive" class="bg-red-20">
               <AlertCircle class="w-4 h-4" />
-              <AlertTitle class="text-sm text-black">We don't recognize that email or password</AlertTitle>
+              <AlertTitle class="text-sm" >We don't recognize that email or password</AlertTitle>
               <AlertDescription class="text-xs text-gray-500">
                 Check your credentials and try again.
               </AlertDescription>

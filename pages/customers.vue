@@ -23,7 +23,7 @@ import { useFetch } from '@vueuse/core';
 const colorMode = useColorMode()
 
 // Loading effect before navigating to this Page
-const { data: products } = await useFetch("https://fakestoreapi.com/products");
+// const { data: products } = await useFetch("https://fakestoreapi.com/products");
 </script>
 
 <template>
