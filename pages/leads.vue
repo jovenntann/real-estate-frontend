@@ -385,13 +385,13 @@ const { pending, data: leads } = useFetch("http://localhost:8000/agent/leads", {
                             </div>
                           </TableCell>
                           <TableCell class="hidden sm:table-cell">
-                            {{ lead.company }}
+                            {{ lead.company.company_name }}
                           </TableCell>
                           <TableCell class="hidden sm:table-cell">
                             {{ lead.phone_number }}
                           </TableCell>
                           <TableCell class="hidden md:table-cell">
-                            {{ lead.status }}
+                            {{ lead.status.status }}
                           </TableCell>
                         </TableRow>
                       </template>
