@@ -32,11 +32,11 @@ const colorMode = useColorMode()
               <span class="text-xs text-gray-500">LEAD MANAGEMENT</span>
             </div>
             <NuxtLink
-              to="/customers"
+              to="/leads"
               class="flex items-center gap-3 rounded-lg px-3 py-2 mt-1 mb-1 text-muted-foreground transition-all hover:text-primary"
             >
               <Users class="h-4 w-4" />
-              Customers
+              Leads
             </NuxtLink>
             <a
               href="#"
@@ -117,7 +117,7 @@ const colorMode = useColorMode()
                 class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
               >
                 <Users class="h-5 w-5" />
-                Customers
+                Leads
               </a>
               <a
                 href="#"
@@ -309,7 +309,7 @@ const colorMode = useColorMode()
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Customer</TableHead>
+                  <TableHead>Leads  </TableHead>
                   <TableHead class="hidden xl:table-column">
                     Type
                   </TableHead>
