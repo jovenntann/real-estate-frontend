@@ -205,7 +205,7 @@
         
         <div class="space-y-4 m-4">
             <div
-            v-for="(message, index) in messages"
+            v-for="(message, index) in mail.chats "
             :key="index"
             :class="cn(
                 'flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm text-white',
@@ -213,7 +213,7 @@
                 message.source === 'messenger' ? 'bg-blue-500' : 'bg-green-500',
             )"
             >
-            {{ message.content }}
+            {{ message.message }}
             </div>
         </div>
 
