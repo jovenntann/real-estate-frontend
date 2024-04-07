@@ -102,29 +102,32 @@ const colorMode = useColorMode()
           </SheetTrigger>
           <SheetContent side="left" class="flex flex-col">
             <nav class="grid gap-2 text-lg font-medium">
-              <a
-                href="#"
+              <NuxtLink
+                to="/"
                 class="flex items-center gap-2 text-lg font-semibold"
               >
                 <Package2 class="h-6 w-6" />
                 <span class="sr-only">Acme Inc</span>
-              </a>
-              <a
-                href="#"
-                class="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
+              </NuxtLink>
+              <NuxtLink
+                to="/dashboard"
+                activeClass="text-foreground bg-muted"
+                class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
               >
                 <Home class="h-5 w-5" />
                 Dashboard
-              </a>
-              <a
-                href="#"
+              </NuxtLink>
+              <NuxtLink
+                to="/leads"
+                activeClass="text-foreground bg-muted"
                 class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
               >
                 <Users class="h-5 w-5" />
                 Leads
-              </a>
-              <a
-                href="#"
+              </NuxtLink>
+              <NuxtLink
+                to="/orders"
+                activeClass="text-foreground bg-muted"
                 class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
               >
                 <ShoppingCart class="h-5 w-5" />
@@ -132,21 +135,23 @@ const colorMode = useColorMode()
                 <Badge class="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                   6
                 </Badge>
-              </a>
-              <a
-                href="#"
+              </NuxtLink>
+              <NuxtLink
+                to="/products"
+                activeClass="text-foreground bg-muted"
                 class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
               >
                 <Package class="h-5 w-5" />
                 Products
-              </a>
-              <a
-                href="#"
+              </NuxtLink>
+              <NuxtLink
+                to="/analytics"
+                activeClass="text-foreground bg-muted"
                 class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
               >
                 <LineChart class="h-5 w-5" />
                 Analytics
-              </a>
+              </NuxtLink>
             </nav>
             <div class="mt-auto">
               <Card>
