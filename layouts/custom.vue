@@ -1,5 +1,5 @@
 <template>
-    <div style="border: 1px solid red;">
+    <div style="border: 1px solid blue;">
         <slot />
     </div>
 </template> 
