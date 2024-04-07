@@ -12,7 +12,7 @@ import { accounts, mails } from '../components/pages/messages/data/mails'
 </script>
 
 <template>
-  <main class="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+  <main class="">
     <div class="hidden flex-col md:flex h-full">
       <Mail
         :accounts="accounts"
