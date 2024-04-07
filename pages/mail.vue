@@ -6,8 +6,8 @@ definePageMeta({
   layout: 'authenticated'
 })
 
-import Mail from '../components/pages/messages/Mail.vue'
-import { accounts, mails } from '../components/pages/messages/data/mails'
+import Mail from '../components/pages/mail/Mail.vue'
+import { accounts, mails } from '../components/pages/mail/data/mails'
 
 </script>
 
