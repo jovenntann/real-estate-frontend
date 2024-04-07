@@ -24,14 +24,14 @@ const colorMode = useColorMode()
             <NuxtLink
                 to="/dashboard"
                 activeClass="text-foreground bg-muted"
-                class="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                class="flex items-center gap-3 rounded-lg px-3 py-2 mt-1 mb-1 text-muted-foreground transition-all hover:text-primary"
                 >
-                <Home class="h-5 w-5" />
+                <Home class="h-4 w-4" />
                 Dashboard
             </NuxtLink>
-            <div class="mt-4 mb-2 px-2 text-xs font-medium lg:px-4">
+            <!-- <div class="mt-4 mb-2 px-2 text-xs font-medium lg:px-4">
               <span class="text-xs text-gray-500">LEAD MANAGEMENT</span>
-            </div>
+            </div> -->
             <NuxtLink
               to="/leads"
               activeClass="text-foreground bg-muted"
