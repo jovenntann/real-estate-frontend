@@ -21,6 +21,20 @@
   })
 
   const today = new Date()
+
+  import { cn } from '@/lib/utils'
+  const messages = ref([
+  { role: 'agent', content: 'Greetings! I am here to provide you with assistance. Could you kindly elaborate on the issues you are facing today so that I can better assist you?', source: 'messenger' },
+  { role: 'user', content: 'Hi, I am currently facing some difficulties with my account and I require your assistance.', source: 'messenger' },
+  { role: 'agent', content: 'I am truly sorry to hear that you are experiencing difficulties with your account. Could you please provide me with more details regarding the issue?', source: 'messenger' },
+  { role: 'user', content: 'I am unable to access my account. It appears that my login credentials are not being recognized.', source: 'messenger' },
+  { role: 'agent', content: 'Could you please share your username with me?', source: 'messenger' },
+  { role: 'user', content: 'My username is johndoe123.', source: 'messenger' },
+  { role: 'agent', content: 'I appreciate your cooperation. I will now proceed to investigate this issue.', source: 'messenger' },
+  { role: 'user', content: 'Thanks for your help.', source: 'text' },
+  { role: 'agent', content: 'You\'re welcome! I will update you as soon as I have more information.', source: 'text' },
+])
+
   </script>
 
   <template>
@@ -188,9 +202,21 @@
           </div>
         </div>
         <Separator />
-        <div class="flex-1 whitespace-pre-wrap p-4 text-sm">
-          {{ mail.text }}
+        
+        <div class="space-y-4 m-4">
+            <div
+            v-for="(message, index) in messages"
+            :key="index"
+            :class="cn(
+                'flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm text-white',
+                message.role === 'user' ? 'ml-auto bg-primary' : 'bg-muted',
+                message.source === 'messenger' ? 'bg-blue-500' : 'bg-green-500',
+            )"
+            >
+            {{ message.content }}
+            </div>
         </div>
+
         <Separator class="mt-auto" />
         <div class="p-4">
           <form>

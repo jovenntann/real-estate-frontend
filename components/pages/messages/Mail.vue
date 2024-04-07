@@ -8,7 +8,8 @@ import { refDebounced } from '@vueuse/core'
 import type { Mail } from './data/mails'
 import MailList from './MailList.vue'
 import MailDisplay from './MailDisplay.vue'
-import { cn } from '@/lib/utils'
+
+import CardChat from './CardChat.vue'
 
 interface MailProps {
   accounts: {
@@ -80,7 +81,7 @@ function onExpand() {
             </h1>
             <TabsList class="ml-auto">
               <TabsTrigger value="all" class="text-zinc-600 dark:text-zinc-200">  
-                All mail
+                All messages
               </TabsTrigger>
               <TabsTrigger value="unread" class="text-zinc-600 dark:text-zinc-200">
                 Unread
@@ -107,6 +108,7 @@ function onExpand() {
       <ResizableHandle id="resiz-handle-1" with-handle />
       <ResizablePanel id="resize-panel-2" :default-size="defaultLayout[2]">
         <MailDisplay :mail="selectedMailData" />
+        <!-- <CardChat/> -->
       </ResizablePanel>
     </ResizablePanelGroup>
   </TooltipProvider>
