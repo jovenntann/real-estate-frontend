@@ -44,7 +44,7 @@ const handleButtonClick = async (leadMessageId: number) => {
           :key="leadMessage.id"
           :class="cn(
             'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
-            selectedMail === leadMessage.id.toString() && 'bg-muted',
+            selectedLeadMessageId === leadMessage.id && 'bg-muted',
           )"
           @click="handleButtonClick(leadMessage.id)"
         >
@@ -57,9 +57,9 @@ const handleButtonClick = async (leadMessageId: number) => {
                 <!-- <span v-if="!message.read" class="flex h-2 w-2 rounded-full bg-blue-600" /> -->
               </div>
               <div
-                :class="cn(
+                :class="cn( 
                   'ml-auto text-xs',
-                  selectedMail === leadMessage.id.toString()
+                  selectedLeadMessageId === leadMessage.id
                     ? 'text-foreground'
                     : 'text-muted-foreground',
                 )"
@@ -73,12 +73,21 @@ const handleButtonClick = async (leadMessageId: number) => {
             </div>
           </div>
           <div class="line-clamp-2 text-xs text-muted-foreground">
-            {{ leadMessage.last_message.message.substring(0, 150) }}
+            <div v-if="leadMessage.last_message.sender === 'page'">
+              You: {{ leadMessage.last_message.message }} 
+            </div>
+          <div v-else>
+            {{ leadMessage.last_message.message }}
+          </div>
+            
           </div>
           <div class="flex items-center gap-2">
             <!-- <Badge v-for="label of message.labels" :key="label" :variant="getBadgeVariantFromLabel(label)">
               {{ label }}
             </Badge> -->
+                <Badge variant="secondary">
+              {{ leadMessage.status.status }}
+            </Badge>
           </div>
         </button>
       </TransitionGroup>
