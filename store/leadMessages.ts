@@ -1,31 +1,37 @@
 import { defineStore } from 'pinia';
 
-export interface LeadMessagePage {
+export interface LeadMessageCompany {
   id: number;
-  page_name: string;
-  page_id: string;
-  access_token: string;
+  company_name: string;
+  address: string;
+  phone_number: string;
+  company_size: number;
+  industry: string;
 }
 
-export interface LeadMessageLead {
+export interface LeadMessageStatus {
+  id: number;
+  status: string;
+}
+
+export interface LeadMessageMessage {
+  id: number;
+  source: string;
+  sender: string;
+  message: string;
+  timestamp: string;
+}
+
+export interface LeadMessage {
   id: number;
   first_name: string;
   last_name: string;
   email: string;
   phone_number: string;
-  company: number;
-  status: number;
-}
-
-export interface LeadMessage {
-  id: number;
-  page: LeadMessagePage;
-  lead: LeadMessageLead;
-  source: string;
-  sender: string;
-  messenger_id: string;
-  message: string;
-  timestamp: string;
+  company: LeadMessageCompany;
+  status: LeadMessageStatus;
+  last_message_at: string,
+  last_message: LeadMessageMessage;
 }
 
 export interface LeadMessagesResponse {

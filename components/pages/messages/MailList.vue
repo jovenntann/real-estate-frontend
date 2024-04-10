@@ -22,11 +22,11 @@ const leadMessagesStore = useLeadMessagesStore()
 const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, setSelectedLeadMessageId } = leadMessagesStore
 const { leadMessagesList, selectedLeadMessageId } = storeToRefs(leadMessagesStore)
 
-const { pending, data: leadMessages } = await useFetch<LeadMessagesResponse>("http://localhost:8000/agent/messages")
+const { data: leadMessages } = await useFetch<LeadMessagesResponse>("http://localhost:8000/agent/leads/messages")
 if (leadMessages.value) {
   setLeadMessages(leadMessages.value.results);
   // Let us set the first value from results
-  setSelectedLeadMessageId(leadMessages.value.results[0].lead.id)
+  setSelectedLeadMessageId(leadMessages.value.results[0].id)
 } 
 
 const handleButtonClick = async (leadMessageId: number) => {
@@ -46,13 +46,13 @@ const handleButtonClick = async (leadMessageId: number) => {
             'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
             selectedMail === leadMessage.id.toString() && 'bg-muted',
           )"
-          @click="handleButtonClick(leadMessage.lead.id)"
+          @click="handleButtonClick(leadMessage.id)"
         >
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">
               <div class="flex items-center gap-2">
                 <div class="font-semibold">
-                  {{ leadMessage.lead.first_name }} {{ leadMessage.lead.last_name }}
+                  {{ leadMessage.first_name }} {{ leadMessage.last_name }}
                 </div>
                 <!-- <span v-if="!message.read" class="flex h-2 w-2 rounded-full bg-blue-600" /> -->
               </div>
@@ -64,16 +64,16 @@ const handleButtonClick = async (leadMessageId: number) => {
                     : 'text-muted-foreground',
                 )"
               >
-                {{ formatDistanceToNow(new Date(leadMessage.timestamp), { addSuffix: true }) }}
+                {{ formatDistanceToNow(new Date(leadMessage.last_message_at), { addSuffix: true }) }}
               </div>
             </div>
 
             <div class="text-xs font-medium">
-              {{ leadMessage.lead.email }}
+              {{ leadMessage.email }}
             </div>
           </div>
           <div class="line-clamp-2 text-xs text-muted-foreground">
-            {{ leadMessage.message.substring(0, 150) }}
+            {{ leadMessage.last_message.message.substring(0, 150) }}
           </div>
           <div class="flex items-center gap-2">
             <!-- <Badge v-for="label of message.labels" :key="label" :variant="getBadgeVariantFromLabel(label)">
