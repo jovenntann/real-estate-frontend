@@ -87,7 +87,7 @@ function onExpand() {
     >
       <ResizablePanel id="resize-panel-1" :default-size="defaultLayout[0]" :min-size="10" :max-size="30">
         <Tabs default-value="all">
-          <div class="flex items-center px-4 py-2">fResizablePanel
+          <div class="flex items-center px-4 py-2">
             <h1 class="text-xl font-bold">
               Messages
             </h1>
