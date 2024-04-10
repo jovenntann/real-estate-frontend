@@ -9,17 +9,19 @@ interface MailListProps {
 }
 
 defineProps<MailListProps>()
-const selectedMail = defineModel<number>('selectedMail', { required: false })
 
-function getBadgeVariantFromLabel(label: string) {
-  if (['work'].includes(label.toLowerCase()))
-    return 'default'
+const selectedMail = defineModel<string>('selectedMail', { required: false })
+const selectedLead = defineModel<string>('selectedLead', { required: false })
 
-  if (['personal'].includes(label.toLowerCase()))
-    return 'outline'
+// function getBadgeVariantFromLabel(label: string) {
+//   if (['work'].includes(label.toLowerCase()))
+//     return 'default'
 
-  return 'secondary'
-}
+//   if (['personal'].includes(label.toLowerCase()))
+//     return 'outline'
+
+//   return 'secondary'
+// }
 
 
 interface Page {
@@ -58,13 +60,15 @@ interface MessagesResponse {
 }
 
 const { pending, data: leads } = await useFetch<MessagesResponse>("http://localhost:8000/agent/messages")
-console.log(leads);
+// console.log(leads);
+
 
 
 </script>
 
 <template>
-  <ScrollArea class="h-screen flex">
+  <!-- TODO: This need to be browser side compatible -->
+  <ScrollArea class="h-screen flex max-h-[85vh]">
     <div class="flex-1 flex flex-col gap-2 p-4 pt-0">
       <TransitionGroup name="list" appear>
         <button
@@ -72,9 +76,9 @@ console.log(leads);
           :key="message.id"
           :class="cn(
             'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
-            selectedMail === message.id && 'bg-muted',
+            selectedMail === message.id.toString() && 'bg-muted',
           )"
-          @click="selectedMail = message.id"
+          @click="selectedMail = message.id.toString(); selectedLead = message.lead.id.toString()"
         >
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">
@@ -87,7 +91,7 @@ console.log(leads);
               <div
                 :class="cn(
                   'ml-auto text-xs',
-                  selectedMail === message.id
+                  selectedMail === message.id.toString()
                     ? 'text-foreground'
                     : 'text-muted-foreground',
                 )"
@@ -97,11 +101,11 @@ console.log(leads);
             </div>
 
             <div class="text-xs font-medium">
-              {{ message.message }}
+              {{ message.lead.email }}
             </div>
           </div>
           <div class="line-clamp-2 text-xs text-muted-foreground">
-            {{ message.message.substring(0, 300) }}
+            {{ message.message.substring(0, 150) }}
           </div>
           <div class="flex items-center gap-2">
             <!-- <Badge v-for="label of message.labels" :key="label" :variant="getBadgeVariantFromLabel(label)">

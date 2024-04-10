@@ -8,7 +8,8 @@
   import type { Mail } from './data/mails'
 
   interface MailDisplayProps {
-    mail: Mail | undefined
+    mail: Mail | undefined,
+    selectedLead: string | undefined
   }
 
   const props = defineProps<MailDisplayProps>()
@@ -23,18 +24,44 @@
   const today = new Date()
 
   import { cn } from '@/lib/utils'
-  const messages = ref([
-  { role: 'agent', content: 'Greetings! I am here to provide you with assistance. Could you kindly elaborate on the issues you are facing today so that I can better assist you?', source: 'messenger' },
-  { role: 'user', content: 'Hi, I am currently facing some difficulties with my account and I require your assistance.', source: 'messenger' },
-  { role: 'agent', content: 'I am truly sorry to hear that you are experiencing difficulties with your account. Could you please provide me with more details regarding the issue?', source: 'messenger' },
-  { role: 'user', content: 'I am unable to access my account. It appears that my login credentials are not being recognized.', source: 'messenger' },
-  { role: 'agent', content: 'Could you please share your username with me?', source: 'messenger' },
-  { role: 'user', content: 'My username is johndoe123.', source: 'messenger' },
-  { role: 'agent', content: 'I appreciate your cooperation. I will now proceed to investigate this issue.', source: 'messenger' },
-  { role: 'user', content: 'Thanks for your help.', source: 'text' },
-  { role: 'agent', content: 'You\'re welcome! I will update you as soon as I have more information.', source: 'text' },
-])
 
+  interface Page {
+    id: number;
+    page_name: string;
+    page_id: string;
+  }
+
+  interface Lead {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone_number: string;
+    company: number;
+    status: number;
+    facebook_id: string;
+  }
+
+  interface Result {
+    id: number;
+    page: Page;
+    lead: Lead;
+    source: string;
+    sender: string;
+    messenger_id: string;
+    message: string;
+    timestamp: string;
+  }
+
+  interface MessagesResponse {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Result[];
+  }
+
+  const { pending, data: messages } = await useFetch<MessagesResponse>(`http://localhost:8000/agent/leads/${props.selectedLead}/messages`)
+ 
   </script>
 
   <template>
@@ -177,6 +204,7 @@
         </DropdownMenu>
       </div>
       <Separator />
+
       <div v-if="mail" class="flex flex-1 flex-col">
         <div class="flex items-start p-4">
           <div class="flex items-start gap-4 text-sm">
@@ -202,20 +230,23 @@
           </div>
         </div>
         <Separator />
-        
-        <div class="space-y-4 m-4">
+      
+        <!-- TODO: This need to be browser side compatible -->
+        <ScrollArea class="h-screen flex max-h-[70vh]">
+          <div class="flex-1 flex flex-col gap-2 m-4">
             <div
-            v-for="(message, index) in mail.chats "
+            v-for="(message, index) in messages?.results"
             :key="index"
             :class="cn(
-                'flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm text-white',
-                message.role === 'user' ? 'ml-auto bg-primary' : 'bg-muted',
+                'flex w-auto max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm text-white',
+                message.sender === 'page' ? 'ml-auto bg-primary' : 'bg-muted',
                 message.source === 'messenger' ? 'bg-blue-500' : 'bg-green-500',
             )"
             >
-            {{ message.message }}
+            <div class="whitespace-pre-line max-w-full">{{ message.message }}</div>
             </div>
-        </div>
+          </div>
+        </ScrollArea>
 
         <Separator class="mt-auto" />
         <div class="p-4">
@@ -245,8 +276,12 @@
           </form>
         </div>
       </div>
+
+
       <div v-else class="p-8 text-center text-muted-foreground">
         No message selected
       </div>
+
+
     </div>
   </template>

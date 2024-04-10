@@ -30,6 +30,8 @@ const props = withDefaults(defineProps<MailProps>(), {
 
 const isCollapsed = ref(props.defaultCollapsed)
 const selectedMail = ref<string | undefined>(props.mails[0].id)
+const selectedLead = ref<string | undefined>('80')
+
 const searchValue = ref('')
 const debouncedSearch = refDebounced(searchValue, 250)
 
@@ -55,7 +57,17 @@ const filteredMailList = computed(() => {
 
 const unreadMailList = computed(() => filteredMailList.value.filter(item => !item.read))
 
-const selectedMailData = computed(() => props.mails.find(item => item.id === selectedMail.value))
+const selectedMailData = computed(() => {
+  const mailData = props.mails.find(item => item.id === selectedMail.value);
+  console.log(`Selected Mail Value: ${selectedMail.value}`);
+  return mailData;
+})
+
+const selectedLeadData = computed(() => {
+  const newValue = selectedLead.value || '80'
+  console.log(`Selected Lead Value: ${newValue}`);
+  return newValue;
+})
 
 function onCollapse() {
   isCollapsed.value = true
@@ -73,9 +85,9 @@ function onExpand() {
       direction="horizontal"
       class="h-full items-stretch" :style="{ maxHeight: 'calc(100vh - 120px)' }"
     >
-      <ResizablePanel id="resize-panel-1" :default-size="defaultLayout[1]" :min-size="30" :max-size="30">
+      <ResizablePanel id="resize-panel-1" :default-size="defaultLayout[0]" :min-size="10" :max-size="30">
         <Tabs default-value="all">
-          <div class="flex items-center px-4 py-2">
+          <div class="flex items-center px-4 py-2">fResizablePanel
             <h1 class="text-xl font-bold">
               Messages
             </h1>
@@ -98,16 +110,20 @@ function onExpand() {
             </form>
           </div>
           <TabsContent value="all" class="m-0">
-            <MailList v-model:selected-mail="selectedMail" :items="filteredMailList" />
+            <MailList 
+              v-model:selected-mail="selectedMail" 
+              v-model:selected-lead="selectedLead" 
+              :items="filteredMailList" 
+            />
           </TabsContent>
-          <TabsContent value="unread" class="m-0">
+          <!-- <TabsContent value="unread" class="m-0">
             <MailList v-model:selected-mail="selectedMail" :items="unreadMailList" />
-          </TabsContent>
+          </TabsContent> -->
         </Tabs>
       </ResizablePanel>
-      <ResizableHandle id="resiz-handle-1" with-handle />
-      <ResizablePanel id="resize-panel-2" :default-size="defaultLayout[2]">
-        <MailDisplay :mail="selectedMailData" />
+      <ResizableHandle id="resize-handle-1" with-handle />
+      <ResizablePanel id="resize-panel-2" :default-size="defaultLayout[1]">
+        <MailDisplay :mail="selectedMailData" :selectedLead="selectedLeadData" />
         <!-- <CardChat/> -->
       </ResizablePanel>
     </ResizablePanelGroup>
