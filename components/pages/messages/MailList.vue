@@ -19,24 +19,19 @@ import { storeToRefs } from 'pinia'
 import { useLeadMessagesStore } from '~/store/leadMessages'
 import type { LeadMessagesResponse } from '~/store/leadMessages'
 const leadMessagesStore = useLeadMessagesStore()
-const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList } = leadMessagesStore
-const { leadMessagesList } = storeToRefs(leadMessagesStore)
+const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, setSelectedLeadMessageId } = leadMessagesStore
+const { leadMessagesList, selectedLeadMessageId } = storeToRefs(leadMessagesStore)
 
 const { pending, data: leadMessages } = await useFetch<LeadMessagesResponse>("http://localhost:8000/agent/messages")
 if (leadMessages.value) {
   setLeadMessages(leadMessages.value.results);
+  // Let us set the first value from results
+  setSelectedLeadMessageId(leadMessages.value.results[0].lead.id)
 } 
 
-// Messages
-import { useMessagesStore } from '~/store/messages' 
-import type { MessagesResponse } from '~/store/messages'
-const messagesStore = useMessagesStore()
-const { setMessages, addMessageToList, removeMessageFromList } = messagesStore
-const { messagesList } = storeToRefs(messagesStore)
-const { data: messages } = await useFetch<MessagesResponse>("http://localhost:8000/agent/leads/80/messages")
-if (messages.value) {
-  setMessages(messages.value.results);
-} 
+const handleButtonClick = async (leadMessageId: number) => {
+  setSelectedLeadMessageId(leadMessageId)
+}
 </script>
 
 <template>
@@ -51,7 +46,7 @@ if (messages.value) {
             'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
             selectedMail === leadMessage.id.toString() && 'bg-muted',
           )"
-          @click="selectedMail = leadMessage.id.toString()"
+          @click="handleButtonClick(leadMessage.lead.id)"
         >
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">

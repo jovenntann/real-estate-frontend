@@ -37,6 +37,7 @@ export interface LeadMessagesResponse {
 
 export const useLeadMessagesStore = defineStore('leadMessagesStore', () => {
   const leadMessagesList = ref<LeadMessage[]>([]);
+  const selectedLeadMessageId = ref<number | null>(null);
 
   function setLeadMessages(leadMessages: LeadMessage[]) {
     leadMessagesList.value = leadMessages;
@@ -53,5 +54,22 @@ export const useLeadMessagesStore = defineStore('leadMessagesStore', () => {
     }
   }
 
-  return { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, leadMessagesList };
+  function setSelectedLeadMessageId(leadMessageId: number) {
+    selectedLeadMessageId.value = leadMessageId;
+  }
+
+  function removeSelectedLeadMessageId() {
+    selectedLeadMessageId.value = null;
+  }
+
+  return { 
+    setLeadMessages, 
+    addLeadMessageToList, 
+    removeLeadMessageFromList, 
+    leadMessagesList, 
+    
+    selectedLeadMessageId,
+    setSelectedLeadMessageId,
+    removeSelectedLeadMessageId
+  };
 });

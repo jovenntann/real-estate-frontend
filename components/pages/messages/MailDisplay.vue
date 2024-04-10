@@ -1,6 +1,8 @@
   <script lang="ts" setup>
+  import { storeToRefs } from 'pinia'
+
   import { Archive, ArchiveX, Clock, Forward, MoreVertical, Reply, ReplyAll, Trash2 } from 'lucide-vue-next'
-  import { computed } from 'vue'
+  import { computed, watchEffect } from 'vue'
   import addDays from 'date-fns/addDays'
   import addHours from 'date-fns/addHours'
   import format from 'date-fns/format'
@@ -23,14 +25,30 @@
   const today = new Date()
 
   import { cn } from '@/lib/utils'
+  
+  // Lead Messages
+  import { useLeadMessagesStore } from '~/store/leadMessages'
+  const leadMessagesStore = useLeadMessagesStore()
+  const { selectedLeadMessageId } = storeToRefs(leadMessagesStore)
 
   // Messages
-  import { storeToRefs } from 'pinia'
   import { useMessagesStore } from '~/store/messages' 
   import type { MessagesResponse } from '~/store/messages'
   const messagesStore = useMessagesStore()
   const { setMessages, addMessageToList, removeMessageFromList } = messagesStore
   const { messagesList } = storeToRefs(messagesStore)
+
+  watchEffect(() => {
+    const fetchMessages = async () => {
+      if (selectedLeadMessageId.value) {
+        const { data: messages } = await useFetch<MessagesResponse>(`http://localhost:8000/agent/leads/${selectedLeadMessageId.value}/messages`)
+        if (messages.value) {
+          setMessages(messages.value.results);
+        } 
+      }
+    };
+    fetchMessages();
+  });
 
   </script>
 
