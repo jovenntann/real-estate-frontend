@@ -228,7 +228,7 @@
             :class="cn(
                 'flex w-auto max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm text-white',
                 message.sender === 'page' ? 'ml-auto bg-primary' : 'bg-muted',
-                message.source === 'messenger' ? 'bg-blue-500' : 'bg-green-500',
+                (message.source === 'messenger' && message.sender === 'page') ? 'bg-blue-500 text-white' : (message.source === 'messenger' && message.sender === 'lead') ? 'bg-gray-200 text-black' : 'bg-green-500 text-black',
             )"
             >
             <div class="whitespace-pre-line max-w-full">{{ message.message }}</div>
