@@ -30,7 +30,6 @@ const props = withDefaults(defineProps<MailProps>(), {
 
 const isCollapsed = ref(props.defaultCollapsed)
 const selectedMail = ref<string | undefined>(props.mails[0].id)
-const selectedLead = ref<string | undefined>('80')
 
 const searchValue = ref('')
 const debouncedSearch = refDebounced(searchValue, 250)
@@ -61,12 +60,6 @@ const selectedMailData = computed(() => {
   const mailData = props.mails.find(item => item.id === selectedMail.value);
   console.log(`Selected Mail Value: ${selectedMail.value}`);
   return mailData;
-})
-
-const selectedLeadData = computed(() => {
-  const newValue = selectedLead.value || '80'
-  console.log(`Selected Lead Value: ${newValue}`);
-  return newValue;
 })
 
 function onCollapse() {
@@ -112,7 +105,6 @@ function onExpand() {
           <TabsContent value="all" class="m-0">
             <MailList 
               v-model:selected-mail="selectedMail" 
-              v-model:selected-lead="selectedLead" 
               :items="filteredMailList" 
             />
           </TabsContent>
@@ -123,7 +115,7 @@ function onExpand() {
       </ResizablePanel>
       <ResizableHandle id="resize-handle-1" with-handle />
       <ResizablePanel id="resize-panel-2" :default-size="defaultLayout[1]">
-        <MailDisplay :mail="selectedMailData" :selectedLead="selectedLeadData" />
+        <MailDisplay :mail="selectedMailData" />
         <!-- <CardChat/> -->
       </ResizablePanel>
     </ResizablePanelGroup>

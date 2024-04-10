@@ -9,7 +9,6 @@
 
   interface MailDisplayProps {
     mail: Mail | undefined,
-    selectedLead: string | undefined
   }
 
   const props = defineProps<MailDisplayProps>()
@@ -25,43 +24,47 @@
 
   import { cn } from '@/lib/utils'
 
-  interface Page {
-    id: number;
-    page_name: string;
-    page_id: string;
-  }
+  // Chats
+  interface ChatPage {
+      id: number;
+      page_name: string;
+      page_id: string;
+    }
 
-  interface Lead {
-    id: number;
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone_number: string;
-    company: number;
-    status: number;
-    facebook_id: string;
-  }
+    interface ChatLead {
+      id: number;
+      first_name: string;
+      last_name: string;
+      email: string;
+      phone_number: string;
+      company: number;
+      status: number;
+      facebook_id: string;
+    }
 
-  interface Result {
-    id: number;
-    page: Page;
-    lead: Lead;
-    source: string;
-    sender: string;
-    messenger_id: string;
-    message: string;
-    timestamp: string;
-  }
+    interface ChatResult {
+      id: number;
+      page: ChatPage;
+      lead: ChatLead;
+      source: string;
+      sender: string;
+      messenger_id: string;
+      message: string;
+      timestamp: string;
+    }
 
-  interface MessagesResponse {
-    count: number;
-    next: string | null;
-    previous: string | null;
-    results: Result[];
-  }
+    interface ChatsResponse {
+      count: number;
+      next: string | null;
+      previous: string | null;
+      results: ChatResult[];
+    }
 
-  const { pending, data: messages } = await useFetch<MessagesResponse>(`http://localhost:8000/agent/leads/${props.selectedLead}/messages`)
- 
+  import { useChatsStore } from '~/store/chats' 
+  const chatsStore = useChatsStore()
+  const { setChats, addChatToList, removeChatFromList } = chatsStore
+  const { chatsList } = storeToRefs(chatsStore)
+
   </script>
 
   <template>
@@ -235,7 +238,7 @@
         <ScrollArea class="h-screen flex max-h-[70vh]">
           <div class="flex-1 flex flex-col gap-2 m-4">
             <div
-            v-for="(message, index) in messages?.results"
+            v-for="(message, index) in chatsList"
             :key="index"
             :class="cn(
                 'flex w-auto max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm text-white',

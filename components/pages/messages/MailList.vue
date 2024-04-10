@@ -13,16 +13,6 @@ defineProps<MailListProps>()
 const selectedMail = defineModel<string>('selectedMail', { required: false })
 const selectedLead = defineModel<string>('selectedLead', { required: false })
 
-// function getBadgeVariantFromLabel(label: string) {
-//   if (['work'].includes(label.toLowerCase()))
-//     return 'default'
-
-//   if (['personal'].includes(label.toLowerCase()))
-//     return 'outline'
-
-//   return 'secondary'
-// }
-
 
 interface Page {
   id: number;
@@ -59,10 +49,66 @@ interface MessagesResponse {
   results: Result[];
 }
 
-const { pending, data: leads } = await useFetch<MessagesResponse>("http://localhost:8000/agent/messages")
-// console.log(leads);
+import { storeToRefs } from 'pinia'
+
+// Messages
+import { useMessagesStore } from '~/store/messages'
+import type { Message } from '~/store/messages'
+const messagesStore = useMessagesStore()
+const { setMessages, addMessageToList, removeMessageFromList } = messagesStore
+const { messagesList } = storeToRefs(messagesStore)
+
+const { pending, data: messages } = await useFetch<MessagesResponse>("http://localhost:8000/agent/leads/80/messages")
+if (messages.value) {
+  setMessages(messages.value.results);
+} 
 
 
+// Chats
+interface ChatPage {
+    id: number;
+    page_name: string;
+    page_id: string;
+  }
+
+  interface ChatLead {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone_number: string;
+    company: number;
+    status: number;
+    facebook_id: string;
+  }
+
+  interface ChatResult {
+    id: number;
+    page: ChatPage;
+    lead: ChatLead;
+    source: string;
+    sender: string;
+    messenger_id: string;
+    message: string;
+    timestamp: string;
+  }
+
+  interface ChatsResponse {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: ChatResult[];
+  }
+
+import { useChatsStore } from '~/store/chats' 
+import type { Chat } from '~/store/chats'
+const chatsStore = useChatsStore()
+const { setChats, addChatToList, removeChatFromList } = chatsStore
+const { chatsList } = storeToRefs(chatsStore)
+const { data: chats } = await useFetch<ChatsResponse>("http://localhost:8000/agent/leads/80/messages")
+if (chats.value) {
+  setChats(chats.value.results);
+} 
 
 </script>
 
@@ -72,7 +118,7 @@ const { pending, data: leads } = await useFetch<MessagesResponse>("http://localh
     <div class="flex-1 flex flex-col gap-2 p-4 pt-0">
       <TransitionGroup name="list" appear>
         <button
-          v-for="message of leads?.results"
+          v-for="message of messagesList"
           :key="message.id"
           :class="cn(
             'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
