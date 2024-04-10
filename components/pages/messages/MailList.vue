@@ -74,10 +74,10 @@ const handleButtonClick = async (leadMessageId: number) => {
           </div>
           <div class="line-clamp-2 text-xs text-muted-foreground">
             <div v-if="leadMessage.last_message.sender === 'page'">
-              You: {{ leadMessage.last_message.message }} 
+              You: {{ leadMessage.last_message.message || 'Attachments' }} 
             </div>
           <div v-else>
-            {{ leadMessage.last_message.message }}
+            {{ leadMessage.last_message.message || 'Attachments' }}
           </div>
             
           </div>
@@ -86,7 +86,7 @@ const handleButtonClick = async (leadMessageId: number) => {
               {{ label }}
             </Badge> -->
                 <Badge variant="secondary">
-              {{ leadMessage.status.status }}
+              {{ leadMessage.last_message.source }}
             </Badge>
           </div>
         </button>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { formatDistanceToNow } from 'date-fns'
 import { File, ListFilter} from 'lucide-vue-next'
 
 /* Interfaces */
@@ -25,6 +26,7 @@ interface Lead {
   phone_number: string;
   company: Company;
   status: Status;
+  last_message_at: string;
 } 
 
 interface LeadsResponse {
@@ -168,6 +170,9 @@ definePageMeta({
                     <TableHead class="hidden md:table-cell">
                       Status
                     </TableHead>
+                    <TableHead class="hidden md:table-cell">
+                        Last Message
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -197,6 +202,9 @@ definePageMeta({
                       <TableCell class="hidden md:table-cell">
                         {{ lead.status.status }}
                       </TableCell>
+                    <TableCell class="hidden md:table-cell">
+                        {{ formatDistanceToNow(new Date(lead.last_message_at), { addSuffix: true }) }}
+                    </TableCell>
                     </TableRow>
                   </template>
                 </TableBody>
