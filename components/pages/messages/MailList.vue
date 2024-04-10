@@ -9,7 +9,7 @@ interface MailListProps {
 }
 
 defineProps<MailListProps>()
-const selectedMail = defineModel<string>('selectedMail', { required: false })
+const selectedMail = defineModel<number>('selectedMail', { required: false })
 
 function getBadgeVariantFromLabel(label: string) {
   if (['work'].includes(label.toLowerCase()))
@@ -20,6 +20,47 @@ function getBadgeVariantFromLabel(label: string) {
 
   return 'secondary'
 }
+
+
+interface Page {
+  id: number;
+  page_name: string;
+  page_id: string;
+  access_token: string;
+}
+
+interface Lead {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string;
+  company: number;
+  status: number;
+}
+
+interface Result {
+  id: number;
+  page: Page;
+  lead: Lead;
+  source: string;
+  sender: string;
+  messenger_id: string;
+  message: string;
+  timestamp: string;
+}
+
+interface MessagesResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Result[];
+}
+
+const { pending, data: leads } = await useFetch<MessagesResponse>("http://localhost:8000/agent/messages")
+console.log(leads);
+
+
 </script>
 
 <template>
@@ -27,45 +68,45 @@ function getBadgeVariantFromLabel(label: string) {
     <div class="flex-1 flex flex-col gap-2 p-4 pt-0">
       <TransitionGroup name="list" appear>
         <button
-          v-for="item of items"
-          :key="item.id"
+          v-for="message of leads?.results"
+          :key="message.id"
           :class="cn(
             'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
-            selectedMail === item.id && 'bg-muted',
+            selectedMail === message.id && 'bg-muted',
           )"
-          @click="selectedMail = item.id"
+          @click="selectedMail = message.id"
         >
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">
               <div class="flex items-center gap-2">
                 <div class="font-semibold">
-                  {{ item.name }}
+                  {{ message.lead.first_name }} {{ message.lead.last_name }}
                 </div>
-                <span v-if="!item.read" class="flex h-2 w-2 rounded-full bg-blue-600" />
+                <!-- <span v-if="!message.read" class="flex h-2 w-2 rounded-full bg-blue-600" /> -->
               </div>
               <div
                 :class="cn(
                   'ml-auto text-xs',
-                  selectedMail === item.id
+                  selectedMail === message.id
                     ? 'text-foreground'
                     : 'text-muted-foreground',
                 )"
               >
-                {{ formatDistanceToNow(new Date(item.date), { addSuffix: true }) }}
+                {{ formatDistanceToNow(new Date(message.timestamp), { addSuffix: true }) }}
               </div>
             </div>
 
             <div class="text-xs font-medium">
-              {{ item.subject }}
+              {{ message.message }}
             </div>
           </div>
           <div class="line-clamp-2 text-xs text-muted-foreground">
-            {{ item.text.substring(0, 300) }}
+            {{ message.message.substring(0, 300) }}
           </div>
           <div class="flex items-center gap-2">
-            <Badge v-for="label of item.labels" :key="label" :variant="getBadgeVariantFromLabel(label)">
+            <!-- <Badge v-for="label of message.labels" :key="label" :variant="getBadgeVariantFromLabel(label)">
               {{ label }}
-            </Badge>
+            </Badge> -->
           </div>
         </button>
       </TransitionGroup>
