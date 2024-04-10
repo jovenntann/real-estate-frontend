@@ -227,11 +227,22 @@
             :key="index"
             :class="cn(
                 'flex w-auto max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm text-white',
-                message.sender === 'page' ? 'ml-auto bg-primary' : 'bg-muted',
+                message.sender === 'page' ? 'ml-auto bg-primary' : 'bg-muted',  
                 (message.source === 'messenger' && message.sender === 'page') ? 'bg-blue-500 text-white' : (message.source === 'messenger' && message.sender === 'lead') ? 'bg-gray-200 text-black' : 'bg-green-500 text-black',
             )"
             >
             <div class="whitespace-pre-line max-w-full">{{ message.message }}</div>
+            <div v-if="message.messenger_attachments">
+              <div v-for="(attachment, index) in message.messenger_attachments.data" :key="index">
+                <img v-if="attachment.image_data" :src="attachment.image_data.url" class="rounded-lg" style="max-width: 200px; max-height: 200px;" />
+                <video v-else-if="attachment.video_data" :src="attachment.video_data.url" class="rounded-lg" controls style="max-width: 200px; max-height: 200px;"></video>
+                <div v-else-if="attachment.generic_template">
+                  <h3>{{ attachment.generic_template.title }}</h3>
+                  <p>{{ attachment.generic_template.subtitle }}</p>
+                  <img :src="attachment.generic_template.media_url" class="rounded-lg" style="max-width: 200px; max-height: 200px;" />
+                </div>
+              </div>
+            </div>
             </div>
           </div>
         </ScrollArea>

@@ -1,5 +1,46 @@
 import { defineStore } from 'pinia';
 
+export interface MessengerAttachmentGenericTemplate {
+  title: string;
+  subtitle: string;
+  media_url: string;
+}
+
+export interface MessengerAttachmentImageData {
+  url: string;
+  width: number;
+  height: number;
+  max_width: number;
+  max_height: number;
+  preview_url: string;
+  image_type: number;
+  render_as_sticker: boolean;
+}
+
+export interface MessengerAttachmentVideoData {
+  width: number;
+  height: number;
+  length: number;
+  video_type: number;
+  url: string;
+  preview_url: string;
+  rotation: number;
+}
+
+export interface MessengerAttachmentData {
+  id: string;
+  name: string;
+  size: number;
+  mime_type: string;
+  image_data?: MessengerAttachmentImageData;
+  video_data?: MessengerAttachmentVideoData;
+  generic_template?: MessengerAttachmentGenericTemplate;
+}
+
+export interface MessengerAttachments {
+  data: MessengerAttachmentData[];
+}
+
 export interface MessagePage {
   id: number;
   page_name: string;
@@ -25,6 +66,7 @@ export interface Message {
   sender: string;
   messenger_id: string;
   message: string;
+  messenger_attachments?: MessengerAttachments;
   timestamp: string;
 }
 
