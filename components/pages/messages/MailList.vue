@@ -11,105 +11,32 @@ interface MailListProps {
 defineProps<MailListProps>()
 
 const selectedMail = defineModel<string>('selectedMail', { required: false })
-const selectedLead = defineModel<string>('selectedLead', { required: false })
 
-
-interface Page {
-  id: number;
-  page_name: string;
-  page_id: string;
-  access_token: string;
-}
-
-interface Lead {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number: string;
-  company: number;
-  status: number;
-}
-
-interface Result {
-  id: number;
-  page: Page;
-  lead: Lead;
-  source: string;
-  sender: string;
-  messenger_id: string;
-  message: string;
-  timestamp: string;
-}
-
-interface MessagesResponse {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: Result[];
-}
 
 import { storeToRefs } from 'pinia'
 
+// Lead Messages
+import { useLeadMessagesStore } from '~/store/leadMessages'
+import type { LeadMessagesResponse } from '~/store/leadMessages'
+const leadMessagesStore = useLeadMessagesStore()
+const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList } = leadMessagesStore
+const { leadMessagesList } = storeToRefs(leadMessagesStore)
+
+const { pending, data: leadMessages } = await useFetch<LeadMessagesResponse>("http://localhost:8000/agent/messages")
+if (leadMessages.value) {
+  setLeadMessages(leadMessages.value.results);
+} 
+
 // Messages
-import { useMessagesStore } from '~/store/messages'
-import type { Message } from '~/store/messages'
+import { useMessagesStore } from '~/store/messages' 
+import type { MessagesResponse } from '~/store/messages'
 const messagesStore = useMessagesStore()
 const { setMessages, addMessageToList, removeMessageFromList } = messagesStore
 const { messagesList } = storeToRefs(messagesStore)
-
-const { pending, data: messages } = await useFetch<MessagesResponse>("http://localhost:8000/agent/leads/80/messages")
+const { data: messages } = await useFetch<MessagesResponse>("http://localhost:8000/agent/leads/80/messages")
 if (messages.value) {
   setMessages(messages.value.results);
 } 
-
-
-// Chats
-interface ChatPage {
-    id: number;
-    page_name: string;
-    page_id: string;
-  }
-
-  interface ChatLead {
-    id: number;
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone_number: string;
-    company: number;
-    status: number;
-    facebook_id: string;
-  }
-
-  interface ChatResult {
-    id: number;
-    page: ChatPage;
-    lead: ChatLead;
-    source: string;
-    sender: string;
-    messenger_id: string;
-    message: string;
-    timestamp: string;
-  }
-
-  interface ChatsResponse {
-    count: number;
-    next: string | null;
-    previous: string | null;
-    results: ChatResult[];
-  }
-
-import { useChatsStore } from '~/store/chats' 
-import type { Chat } from '~/store/chats'
-const chatsStore = useChatsStore()
-const { setChats, addChatToList, removeChatFromList } = chatsStore
-const { chatsList } = storeToRefs(chatsStore)
-const { data: chats } = await useFetch<ChatsResponse>("http://localhost:8000/agent/leads/80/messages")
-if (chats.value) {
-  setChats(chats.value.results);
-} 
-
 </script>
 
 <template>
@@ -118,40 +45,40 @@ if (chats.value) {
     <div class="flex-1 flex flex-col gap-2 p-4 pt-0">
       <TransitionGroup name="list" appear>
         <button
-          v-for="message of messagesList"
-          :key="message.id"
+          v-for="leadMessage of leadMessagesList"
+          :key="leadMessage.id"
           :class="cn(
             'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
-            selectedMail === message.id.toString() && 'bg-muted',
+            selectedMail === leadMessage.id.toString() && 'bg-muted',
           )"
-          @click="selectedMail = message.id.toString(); selectedLead = message.lead.id.toString()"
+          @click="selectedMail = leadMessage.id.toString()"
         >
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">
               <div class="flex items-center gap-2">
                 <div class="font-semibold">
-                  {{ message.lead.first_name }} {{ message.lead.last_name }}
+                  {{ leadMessage.lead.first_name }} {{ leadMessage.lead.last_name }}
                 </div>
                 <!-- <span v-if="!message.read" class="flex h-2 w-2 rounded-full bg-blue-600" /> -->
               </div>
               <div
                 :class="cn(
                   'ml-auto text-xs',
-                  selectedMail === message.id.toString()
+                  selectedMail === leadMessage.id.toString()
                     ? 'text-foreground'
                     : 'text-muted-foreground',
                 )"
               >
-                {{ formatDistanceToNow(new Date(message.timestamp), { addSuffix: true }) }}
+                {{ formatDistanceToNow(new Date(leadMessage.timestamp), { addSuffix: true }) }}
               </div>
             </div>
 
             <div class="text-xs font-medium">
-              {{ message.lead.email }}
+              {{ leadMessage.lead.email }}
             </div>
           </div>
           <div class="line-clamp-2 text-xs text-muted-foreground">
-            {{ message.message.substring(0, 150) }}
+            {{ leadMessage.message.substring(0, 150) }}
           </div>
           <div class="flex items-center gap-2">
             <!-- <Badge v-for="label of message.labels" :key="label" :variant="getBadgeVariantFromLabel(label)">
@@ -180,4 +107,4 @@ if (chats.value) {
 .list-leave-active {
   position: absolute;
 }
-</style>
+</style>~/store/leadMessages~/store/leadMessages

@@ -1,13 +1,12 @@
 import { defineStore } from 'pinia';
 
-export interface Page {
+export interface MessagePage {
   id: number;
   page_name: string;
   page_id: string;
-  access_token: string;
 }
 
-export interface Lead {
+export interface MessageLead {
   id: number;
   first_name: string;
   last_name: string;
@@ -15,17 +14,25 @@ export interface Lead {
   phone_number: string;
   company: number;
   status: number;
+  facebook_id: string;
 }
 
 export interface Message {
   id: number;
-  page: Page;
-  lead: Lead;
+  page: MessagePage;
+  lead: MessageLead;
   source: string;
   sender: string;
   messenger_id: string;
   message: string;
   timestamp: string;
+}
+
+export interface MessagesResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Message[];
 }
 
 export const useMessagesStore = defineStore('messagesStore', () => {

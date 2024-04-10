@@ -24,46 +24,13 @@
 
   import { cn } from '@/lib/utils'
 
-  // Chats
-  interface ChatPage {
-      id: number;
-      page_name: string;
-      page_id: string;
-    }
-
-    interface ChatLead {
-      id: number;
-      first_name: string;
-      last_name: string;
-      email: string;
-      phone_number: string;
-      company: number;
-      status: number;
-      facebook_id: string;
-    }
-
-    interface ChatResult {
-      id: number;
-      page: ChatPage;
-      lead: ChatLead;
-      source: string;
-      sender: string;
-      messenger_id: string;
-      message: string;
-      timestamp: string;
-    }
-
-    interface ChatsResponse {
-      count: number;
-      next: string | null;
-      previous: string | null;
-      results: ChatResult[];
-    }
-
-  import { useChatsStore } from '~/store/chats' 
-  const chatsStore = useChatsStore()
-  const { setChats, addChatToList, removeChatFromList } = chatsStore
-  const { chatsList } = storeToRefs(chatsStore)
+  // Messages
+  import { storeToRefs } from 'pinia'
+  import { useMessagesStore } from '~/store/messages' 
+  import type { MessagesResponse } from '~/store/messages'
+  const messagesStore = useMessagesStore()
+  const { setMessages, addMessageToList, removeMessageFromList } = messagesStore
+  const { messagesList } = storeToRefs(messagesStore)
 
   </script>
 
@@ -238,7 +205,7 @@
         <ScrollArea class="h-screen flex max-h-[70vh]">
           <div class="flex-1 flex flex-col gap-2 m-4">
             <div
-            v-for="(message, index) in chatsList"
+            v-for="(message, index) in messagesList"
             :key="index"
             :class="cn(
                 'flex w-auto max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm text-white',
