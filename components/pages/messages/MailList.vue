@@ -46,6 +46,7 @@ const handleButtonClick = async (leadMessageId: number) => {
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">
               <div class="flex items-center gap-2">
+                <img :src="leadMessage.facebook_profile_pic" alt="Profile Picture" class="rounded-full h-10 w-10">
                 <div class="font-semibold">
                   {{ leadMessage.first_name }} {{ leadMessage.last_name }}
                 </div>
@@ -58,9 +59,8 @@ const handleButtonClick = async (leadMessageId: number) => {
                     : 'text-muted-foreground',
                 )">
                 {{ formatDistanceToNow(new Date(leadMessage.last_message_at), { addSuffix: true }) }}
-              </div>
+              </div>  
             </div>
-
             <div class="text-xs font-medium">
               {{ leadMessage.email }}
             </div>

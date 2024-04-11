@@ -31,6 +31,8 @@ export interface LeadMessage {
   phone_number: string;
   company: LeadMessageCompany;
   status: LeadMessageStatus;
+  facebook_id: string,
+  facebook_profile_pic: string,
   last_message_at: string,
   last_message: LeadMessageMessage;
 }
