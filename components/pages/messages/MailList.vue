@@ -27,7 +27,7 @@ if (leadMessages.value) {
   setLeadMessages(leadMessages.value.results);
   // Let us set the first value from results
   setSelectedLeadMessageId(leadMessages.value.results[0].id)
-} 
+}
 
 const handleButtonClick = async (leadMessageId: number) => {
   setSelectedLeadMessageId(leadMessageId)
@@ -39,31 +39,24 @@ const handleButtonClick = async (leadMessageId: number) => {
   <ScrollArea class="h-screen flex max-h-[85vh]">
     <div class="flex-1 flex flex-col gap-2 p-4 pt-0">
       <TransitionGroup name="list" appear>
-        <button
-          v-for="leadMessage of leadMessagesList"
-          :key="leadMessage.id"
-          :class="cn(
-            'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
-            selectedLeadMessageId === leadMessage.id && 'bg-muted',
-          )"
-          @click="handleButtonClick(leadMessage.id)"
-        >
+        <button v-for="leadMessage of leadMessagesList" :key="leadMessage.id" :class="cn(
+          'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
+          selectedLeadMessageId === leadMessage.id && 'bg-muted',
+        )" @click="handleButtonClick(leadMessage.id)">
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">
               <div class="flex items-center gap-2">
                 <div class="font-semibold">
                   {{ leadMessage.first_name }} {{ leadMessage.last_name }}
                 </div>
-                <!-- <span v-if="!message.read" class="flex h-2 w-2 rounded-full bg-blue-600" /> -->
+                <span v-if="!leadMessage.last_message.is_read" class="flex h-2 w-2 rounded-full bg-blue-600" />
               </div>
-              <div
-                :class="cn( 
+              <div :class="cn(
                   'ml-auto text-xs',
                   selectedLeadMessageId === leadMessage.id
                     ? 'text-foreground'
                     : 'text-muted-foreground',
-                )"
-              >
+                )">
                 {{ formatDistanceToNow(new Date(leadMessage.last_message_at), { addSuffix: true }) }}
               </div>
             </div>
@@ -74,18 +67,17 @@ const handleButtonClick = async (leadMessageId: number) => {
           </div>
           <div class="line-clamp-2 text-xs text-muted-foreground">
             <div v-if="leadMessage.last_message.sender === 'page'">
-              You: {{ leadMessage.last_message.message || 'Attachments' }} 
+              You: {{ leadMessage.last_message.message || 'Attachments' }}
             </div>
-          <div v-else>
-            {{ leadMessage.last_message.message || 'Attachments' }}
-          </div>
-            
+            <div v-else>
+              {{ leadMessage.last_message.message || 'Attachments' }}
+            </div>
           </div>
           <div class="flex items-center gap-2">
             <!-- <Badge v-for="label of message.labels" :key="label" :variant="getBadgeVariantFromLabel(label)">
               {{ label }}
             </Badge> -->
-                <Badge variant="secondary">
+            <Badge variant="secondary">
               {{ leadMessage.last_message.source }}
             </Badge>
           </div>

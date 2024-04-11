@@ -67,6 +67,7 @@ export interface Message {
   messenger_id: string;
   message: string;
   messenger_attachments?: MessengerAttachments;
+  is_read: boolean;
   timestamp: string;
 }
 

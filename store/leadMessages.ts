@@ -19,6 +19,7 @@ export interface LeadMessageMessage {
   source: string;
   sender: string;
   message: string;
+  is_read: boolean;
   timestamp: string;
 }
 
