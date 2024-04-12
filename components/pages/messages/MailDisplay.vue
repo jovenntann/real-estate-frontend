@@ -29,7 +29,7 @@
   // Lead Messages
   import { useLeadMessagesStore } from '~/store/leadMessages'
   const leadMessagesStore = useLeadMessagesStore()
-  const { selectedLeadMessageId } = storeToRefs(leadMessagesStore)
+  const { selectedLeadMessageId, selectedLead } = storeToRefs(leadMessagesStore)
 
   // Messages
   import { useMessagesStore } from '~/store/messages' 
@@ -197,16 +197,17 @@
         <div class="flex items-start p-4">
           <div class="flex items-start gap-4 text-sm">
             <Avatar>
+              <AvatarImage :src="selectedLead?.facebook_profile_pic || 'default_image_url'" alt="@radix-vue" />
               <AvatarFallback>
-                {{ mailFallbackName }}
+                
               </AvatarFallback>
             </Avatar>
             <div class="grid gap-1">
               <div class="font-semibold">
-                {{ mail.name }}
+                {{ selectedLead?.first_name }}
               </div>
               <div class="line-clamp-1 text-xs">
-                {{ mail.subject }}
+                {{ selectedLead?.facebook_id }}
               </div>
               <div class="line-clamp-1 text-xs">
                 <span class="font-medium">Reply-To:</span> {{ mail.email }}
@@ -214,7 +215,7 @@
             </div>
           </div>
           <div v-if="mail.date" class="ml-auto text-xs text-muted-foreground">
-            {{ format(new Date(mail.date), "PPpp") }}
+            {{ format(new Date(selectedLead?.last_message_at || Date.now()), "PPpp") }}
           </div>
         </div>
         <Separator />

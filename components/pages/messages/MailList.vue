@@ -17,9 +17,9 @@ import { storeToRefs } from 'pinia'
 
 // Lead Messages
 import { useLeadMessagesStore } from '~/store/leadMessages'
-import type { LeadMessagesResponse } from '~/store/leadMessages'
+import type { LeadMessagesResponse, LeadMessage } from '~/store/leadMessages'
 const leadMessagesStore = useLeadMessagesStore()
-const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, setSelectedLeadMessageId } = leadMessagesStore
+const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, setSelectedLeadMessageId, setSelectedLead } = leadMessagesStore
 const { leadMessagesList, selectedLeadMessageId } = storeToRefs(leadMessagesStore)
 
 const { data: leadMessages } = await useFetch<LeadMessagesResponse>("http://localhost:8000/agent/leads/messages")
@@ -27,10 +27,12 @@ if (leadMessages.value) {
   setLeadMessages(leadMessages.value.results);
   // Let us set the first value from results
   setSelectedLeadMessageId(leadMessages.value.results[0].id)
+  setSelectedLead(leadMessages.value.results[0])
 }
 
-const handleButtonClick = async (leadMessageId: number) => {
+const handleButtonClick = async (leadMessageId: number, leadMessage: LeadMessage) => {
   setSelectedLeadMessageId(leadMessageId)
+  setSelectedLead(leadMessage)
 }
 </script>
 
@@ -42,7 +44,7 @@ const handleButtonClick = async (leadMessageId: number) => {
         <button v-for="leadMessage of leadMessagesList" :key="leadMessage.id" :class="cn(
           'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent',
           selectedLeadMessageId === leadMessage.id && 'bg-muted',
-        )" @click="handleButtonClick(leadMessage.id)">
+        )" @click="handleButtonClick(leadMessage.id, leadMessage)">
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">
               <div class="flex items-center gap-2">
@@ -79,6 +81,9 @@ const handleButtonClick = async (leadMessageId: number) => {
             </Badge> -->
             <Badge variant="secondary">
               {{ leadMessage.last_message.source }}
+            </Badge>
+            <Badge variant="default">
+              Subscribed
             </Badge>
           </div>
         </button>
