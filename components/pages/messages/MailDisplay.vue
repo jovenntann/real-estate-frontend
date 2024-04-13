@@ -1,7 +1,7 @@
   <script lang="ts" setup>
   import { storeToRefs } from 'pinia'
 
-  import { Archive, ArchiveX, Clock, Forward, MoreVertical, Reply, ReplyAll, Trash2 } from 'lucide-vue-next'
+  import { Archive, ArchiveX, Clock, Forward, MoreVertical, Reply, ReplyAll, Trash2, Loader2 } from 'lucide-vue-next'
   import { computed, watchEffect, ref, nextTick } from 'vue'
   import addDays from 'date-fns/addDays'
   import addHours from 'date-fns/addHours'
@@ -33,7 +33,7 @@
 
   // Messages
   import { useMessagesStore } from '~/store/messages' 
-  import type { MessagesResponse } from '~/store/messages'
+  import type { MessagesResponse, Message } from '~/store/messages'
   const messagesStore = useMessagesStore()
   const { setMessages, addMessageToList, removeMessageFromList } = messagesStore
   const { messagesList } = storeToRefs(messagesStore)
@@ -45,24 +45,58 @@
   })
 
   watchEffect(() => {
-  const fetchMessages = async () => {
-    if (selectedLeadMessageId.value) {
-      const { data: messages } = await useFetch<MessagesResponse>(`http://localhost:8000/agent/leads/${selectedLeadMessageId.value}/messages`)
-      if (messages.value) {
-        setMessages(messages.value.results);
-        // Scroll to last massage
-        await nextTick();
-        if (messages.value && messages.value.results && messages.value.results.length > 0) {
-          const el = document.querySelector(`.message-id-${messages.value.results[messages.value.results.length - 1].id}`);
-          if (el) {
-            el.scrollIntoView();
+    const fetchMessages = async () => {
+      if (selectedLeadMessageId.value) {
+        const { data: messages } = await useFetch<MessagesResponse>(`http://localhost:8000/agent/leads/${selectedLeadMessageId.value}/messages`)
+        if (messages.value) {
+          setMessages(messages.value.results);
+          // Scroll to last massage
+          await nextTick();
+          if (messages.value && messages.value.results && messages.value.results.length > 0) {
+            const el = document.querySelector(`.message-id-${messages.value.results[messages.value.results.length - 1].id}`);
+            if (el) {
+              el.scrollIntoView();
+            }
           }
-        }
-      } 
+        } 
+      }
+    };
+    fetchMessages();
+  });
+
+  // Sending Message
+  const message = ref(''); 
+  const isLoading = ref(false)
+  const sendMessage = async () => {
+    isLoading.value = true
+    const payload = {
+      page: 1,
+      source: "messenger",
+      sender: "page",
+      message: message.value
+    };
+
+    const { data: response } = await useFetch<Message>(`http://localhost:8000/agent/leads/${selectedLeadMessageId.value}/messages`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.value) {
+      isLoading.value = false
+      addMessageToList(response.value);
+      // Scroll to last message
+      await nextTick();
+      const el = document.querySelector(`.message-id-${response.value.id}`);
+      if (el) {
+        el.scrollIntoView();  
+      }
+      // Clear message after sending
+      message.value = '';
     }
   };
-  fetchMessages();
-});
 
   </script>
 
@@ -265,11 +299,14 @@
 
         <Separator class="mt-auto" />
         <div class="p-4">
-          <form>
-            <div class="grid gap-4">
+          <form @submit.prevent="sendMessage()">
+            <div class="grid gap-4">  
               <Textarea
                 class="p-4"
+                v-model="message"
                 :placeholder="`Reply ${selectedLead?.first_name}...`"
+                :disabled="isLoading"
+                @keydown.enter.prevent="sendMessage"
               />
               <div class="flex items-center">
                 <Label
@@ -280,16 +317,20 @@
                   thread
                 </Label>
                 <Button
-                  type="button"
+                  type="submit"
                   size="sm"
                   class="ml-auto"
+                  :disabled="isLoading"
+                  @click="sendMessage"
                 >
-                  Send
+                  <Loader2 v-if="isLoading" class="w-4 h-4 mr-2 animate-spin" />  
+                  <span v-if="!isLoading">Send</span>
+                  <span v-else>Sending</span>
                 </Button>
               </div>
             </div>
           </form>
-        </div>
+        </div>  
       </div>
 
 
