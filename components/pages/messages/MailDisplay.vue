@@ -7,20 +7,6 @@
   import addHours from 'date-fns/addHours'
   import format from 'date-fns/format'
   import nextSaturday from 'date-fns/nextSaturday'
-  import type { Mail } from './data/mails'
-
-  interface MailDisplayProps {
-    mail: Mail | undefined,
-  }
-
-  const props = defineProps<MailDisplayProps>()
-
-  const mailFallbackName = computed(() => {
-    return props.mail?.name
-      .split(' ')
-      .map(chunk => chunk[0])
-      .join('')
-  })
 
   const today = new Date()
 
@@ -111,7 +97,7 @@
         <div class="flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger as-child>
-              <Button variant="ghost" size="icon" :disabled="!mail">
+              <Button variant="ghost" size="icon" :disabled="!selectedLeadMessageId">
                 <Archive class="size-4" />
                 <span class="sr-only">Archive</span>
               </Button>
@@ -120,7 +106,7 @@
           </Tooltip>
           <Tooltip>
             <TooltipTrigger as-child>
-              <Button variant="ghost" size="icon" :disabled="!mail">
+              <Button variant="ghost" size="icon" :disabled="!selectedLeadMessageId">
                 <ArchiveX class="size-4" />
                 <span class="sr-only">Move to junk</span>
               </Button>
@@ -129,7 +115,7 @@
           </Tooltip>
           <Tooltip>
             <TooltipTrigger as-child>
-              <Button variant="ghost" size="icon" :disabled="!mail">
+              <Button variant="ghost" size="icon" :disabled="!selectedLeadMessageId">
                 <Trash2 class="size-4" />
                 <span class="sr-only">Move to trash</span>
               </Button>
@@ -141,7 +127,7 @@
             <Popover>
               <PopoverTrigger as-child>
                 <TooltipTrigger as-child>
-                  <Button variant="ghost" size="icon" :disabled="!mail">
+                  <Button variant="ghost" size="icon" :disabled="!selectedLeadMessageId">
                     <Clock class="size-4" />
                     <span class="sr-only">Snooze</span>
                   </Button>
@@ -202,7 +188,7 @@
         <div class="ml-auto flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger as-child>
-              <Button variant="ghost" size="icon" :disabled="!mail">
+              <Button variant="ghost" size="icon" :disabled="!selectedLeadMessageId">
                 <Reply class="size-4" />
                 <span class="sr-only">Reply</span>
               </Button>
@@ -211,7 +197,7 @@
           </Tooltip>
           <Tooltip>
             <TooltipTrigger as-child>
-              <Button variant="ghost" size="icon" :disabled="!mail">
+              <Button variant="ghost" size="icon" :disabled="!selectedLeadMessageId">
                 <ReplyAll class="size-4" />
                 <span class="sr-only">Reply all</span>
               </Button>
@@ -220,7 +206,7 @@
           </Tooltip>
           <Tooltip>
             <TooltipTrigger as-child>
-              <Button variant="ghost" size="icon" :disabled="!mail">
+              <Button variant="ghost" size="icon" :disabled="!selectedLeadMessageId">
                 <Forward class="size-4" />
                 <span class="sr-only">Forward</span>
               </Button>
@@ -231,7 +217,7 @@
         <Separator orientation="vertical" class="mx-2 h-6" />
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button variant="ghost" size="icon" :disabled="!mail">
+            <Button variant="ghost" size="icon" :disabled="!selectedLeadMessageId">
               <MoreVertical class="size-4" />
               <span class="sr-only">More</span>
             </Button>
@@ -246,7 +232,7 @@
       </div>
       <Separator />
 
-      <div v-if="mail" class="flex flex-1 flex-col">
+      <div v-if="selectedLeadMessageId" class="flex flex-1 flex-col">
         <div class="flex items-start p-4">
           <div class="flex items-start gap-4 text-sm">
             <Avatar>
@@ -263,11 +249,11 @@
                 {{ selectedLead?.facebook_id }}
               </div>
               <div class="line-clamp-1 text-xs">
-                <span class="font-medium">Reply-To:</span> {{ mail.email }}
+                <span class="font-medium">Reply-To:</span> {{ selectedLead?.email }}
               </div>
             </div>
           </div>
-          <div v-if="mail.date" class="ml-auto text-xs text-muted-foreground">
+          <div v-if="selectedLead?.last_message_at" class="ml-auto text-xs text-muted-foreground">
             {{ format(new Date(selectedLead?.last_message_at || Date.now()), "PPpp") }}
           </div>
         </div>

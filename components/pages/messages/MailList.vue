@@ -79,12 +79,12 @@ const handleButtonClick = async (leadMessageId: number, leadMessage: LeadMessage
             <!-- <Badge v-for="label of message.labels" :key="label" :variant="getBadgeVariantFromLabel(label)">
               {{ label }}
             </Badge> -->
-            <Badge variant="secondary">
+            <!-- <Badge variant="secondary">
               {{ leadMessage.last_message.source }}
             </Badge>
             <Badge variant="default">
               Subscribed
-            </Badge>
+            </Badge> -->
           </div>
         </button>
       </TransitionGroup>
