@@ -95,6 +95,11 @@
       }
       // Clear message after sending
       message.value = '';
+      // Set focus on Textarea
+      const textarea = document.querySelector('textarea');
+      if (textarea) {
+        textarea.focus();
+      }
     }
   };
 
