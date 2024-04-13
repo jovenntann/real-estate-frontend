@@ -2,7 +2,7 @@
   import { storeToRefs } from 'pinia'
 
   import { Archive, ArchiveX, Clock, Forward, MoreVertical, Reply, ReplyAll, Trash2 } from 'lucide-vue-next'
-  import { computed, watchEffect } from 'vue'
+  import { computed, watchEffect, ref, nextTick } from 'vue'
   import addDays from 'date-fns/addDays'
   import addHours from 'date-fns/addHours'
   import format from 'date-fns/format'
@@ -38,17 +38,31 @@
   const { setMessages, addMessageToList, removeMessageFromList } = messagesStore
   const { messagesList } = storeToRefs(messagesStore)
 
+  const scrollContainer: Ref<HTMLElement | null> = ref(null);
+
+  onMounted(() => {
+    scrollContainer.value = document.querySelector('.scroll-container')
+  })
+
   watchEffect(() => {
-    const fetchMessages = async () => {
-      if (selectedLeadMessageId.value) {
-        const { data: messages } = await useFetch<MessagesResponse>(`http://localhost:8000/agent/leads/${selectedLeadMessageId.value}/messages`)
-        if (messages.value) {
-          setMessages(messages.value.results);
-        } 
-      }
-    };
-    fetchMessages();
-  });
+  const fetchMessages = async () => {
+    if (selectedLeadMessageId.value) {
+      const { data: messages } = await useFetch<MessagesResponse>(`http://localhost:8000/agent/leads/${selectedLeadMessageId.value}/messages`)
+      if (messages.value) {
+        setMessages(messages.value.results);
+        // Scroll to last massage
+        await nextTick();
+        if (messages.value && messages.value.results && messages.value.results.length > 0) {
+          const el = document.querySelector(`.message-id-${messages.value.results[messages.value.results.length - 1].id}`);
+          if (el) {
+            el.scrollIntoView();
+          }
+        }
+      } 
+    }
+  };
+  fetchMessages();
+});
 
   </script>
 
@@ -227,6 +241,7 @@
             v-for="(message, index) in messagesList"
             :key="index"
             :class="cn(
+                `message-id-${message.id}`,
                 'flex w-auto max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm text-white',
                 message.sender === 'page' ? 'ml-auto bg-primary' : 'bg-muted',  
                 (message.source === 'messenger' && message.sender === 'page') ? 'bg-blue-500 text-white' : (message.source === 'messenger' && message.sender === 'lead') ? 'bg-gray-200 text-black' : 'bg-green-500 text-white',
@@ -254,7 +269,7 @@
             <div class="grid gap-4">
               <Textarea
                 class="p-4"
-                :placeholder="`Reply ${mail.name}...`"
+                :placeholder="`Reply ${selectedLead?.first_name}...`"
               />
               <div class="flex items-center">
                 <Label
