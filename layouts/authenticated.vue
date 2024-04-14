@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import { usePusherEventsStore } from '~/store/pusherEvents';
+
 import { CircleUser, Menu, Package2, Search, Users } from 'lucide-vue-next';
 import { Bell, Home, Mail, Package, LineChart } from 'lucide-vue-next'
 import { Icon } from '@iconify/vue'
 const colorMode = useColorMode()
+
+usePusherEventsStore();
+
 </script>
 
 <template>
