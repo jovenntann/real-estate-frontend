@@ -97,13 +97,11 @@ export const useMessagesStore = defineStore('messagesStore', () => {
     if (index > -1) {
       messagesList.value.splice(index, 1);
     }
-  }
+  } 
 
   onMounted(() => {
     const channel = pusher.subscribe('my-channel');
     channel.bind('new-message', (data: any) => {
-      console.log('New message triggered: ', data);
-      alert('New message received: ' + JSON.stringify(data));
       console.log(data);
       addMessageToList(data);
     });
