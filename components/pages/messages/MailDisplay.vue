@@ -243,7 +243,7 @@
             </Avatar>
             <div class="grid gap-1">
               <div class="font-semibold">
-                {{ selectedLead?.first_name }}
+                {{ selectedLead?.first_name }} {{ selectedLead?.last_name }}
               </div>
               <div class="line-clamp-1 text-xs">
                 {{ selectedLead?.facebook_id }}

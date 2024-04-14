@@ -69,10 +69,10 @@ const handleButtonClick = async (leadMessageId: number, leadMessage: LeadMessage
           </div>
           <div class="line-clamp-2 text-xs text-muted-foreground">
             <div v-if="leadMessage.last_message.sender === 'page'">
-              You: {{ leadMessage.last_message.message || 'Attachments' }}
+              You: {{ leadMessage.last_message.message.substring(0, 100) || 'Attachments' }}
             </div>
             <div v-else>
-              {{ leadMessage.last_message.message || 'Attachments' }}
+              {{ leadMessage.last_message.message.substring(0, 100) || 'Attachments' }}
             </div>
           </div>
           <div class="flex items-center gap-2">
