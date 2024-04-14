@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import usePusher from '~/plugins/pusher.client';
 
 
 export interface MessengerAttachmentGenericTemplate {
@@ -82,7 +81,6 @@ export interface MessagesResponse {
 
 export const useMessagesStore = defineStore('messagesStore', () => {
   const messagesList = ref<Message[]>([]);
-  const { pusher } = usePusher();
 
   function setMessages(messages: Message[]) {
     messagesList.value = messages;
@@ -98,14 +96,6 @@ export const useMessagesStore = defineStore('messagesStore', () => {
       messagesList.value.splice(index, 1);
     }
   } 
-
-  onMounted(() => {
-    const channel = pusher.subscribe('my-channel');
-    channel.bind('new-message', (data: any) => {
-      console.log(data);
-      addMessageToList(data);
-    });
-  });
 
   return { setMessages, addMessageToList, removeMessageFromList, messagesList };
 });

@@ -1,3 +1,14 @@
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { usePusherEventsStore } from '~/store/pusherEvents';
+
+export default defineComponent({
+  setup() {
+    const pusherEventsStore = usePusherEventsStore();
+  },
+});
+</script>
+
 <template>
   <!-- This is triggered by await useFetch -->
   <NuxtLoadingIndicator color="#005b96" :height=6 /> 
