@@ -77,3 +77,8 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 ## TODO Items
 
 - [ ] Handle failed to Send Message from Page
+
+
+## References
+
+- https://medium.com/@this.onenterframe/integrating-pusher-with-pinia-in-a-vue-3-web-application-3f7983babf47
