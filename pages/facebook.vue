@@ -8,7 +8,7 @@
 export default {
   methods: {
     login() {
-      FB.login(function(response) {
+      FB.login(function(response) { 
         if (response.authResponse) {
           console.log('Welcome!  Fetching your information.... ');
           FB.api('/me', function(response) {
@@ -17,7 +17,12 @@ export default {
         } else {
           console.log('User cancelled login or did not fully authorize.');
         }
-      });
+      }, 
+      {
+        config_id: '1453786805575965'
+      }
+      
+    );
     }
   },
   mounted() {
