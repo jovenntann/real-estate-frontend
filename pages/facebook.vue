@@ -32,7 +32,7 @@ export default {
     if (d.getElementById(id)) return;
     js = d.createElement(s); js.id = id;
     // Add your App ID at the end of the following line
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0&appId=817039849052260";
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0&appId=2402991556555916";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 }
