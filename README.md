@@ -87,3 +87,4 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 
 - https://developers.facebook.com/docs/facebook-login/facebook-login-for-business#configurations
 - https://www.facebook.com/settings/?tab=business_tools # Page Business Integrations
+- https://developers.facebook.com/docs/facebook-login/guides/access-tokens/ # Page Tokens
