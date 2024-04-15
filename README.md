@@ -82,3 +82,8 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 ## References
 
 - https://medium.com/@this.onenterframe/integrating-pusher-with-pinia-in-a-vue-3-web-application-3f7983babf47
+
+## Facebook Login
+
+- https://developers.facebook.com/docs/facebook-login/facebook-login-for-business#configurations
+- https://www.facebook.com/settings/?tab=business_tools # Page Business Integrations
