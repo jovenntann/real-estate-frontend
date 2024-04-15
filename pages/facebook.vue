@@ -10,6 +10,7 @@ export default {
     login() {
       FB.login(function(response) { 
         if (response.authResponse) {
+          console.log(response);
           console.log('Welcome!  Fetching your information.... ');
           FB.api('/me', function(response) {
             console.log('Good to see you, ' + response.name + '.');
@@ -18,8 +19,8 @@ export default {
           console.log('User cancelled login or did not fully authorize.');
         }
       }, 
-      {
-        config_id: '1486976702177060'
+      { 
+        config_id: '1453786805575965'
       }
       
     );
