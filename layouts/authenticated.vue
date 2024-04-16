@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { UserButton } from 'vue-clerk'
 // Clerk Guard
 const { data: user } = await useFetch('/api/protected', {
   headers: useRequestHeaders(),
@@ -195,7 +196,7 @@ const colorMode = useColorMode()
             </div>
           </form>
         </div>
-        <DropdownMenu>
+        <!-- <DropdownMenu>
           <DropdownMenuTrigger as-child>
             <Button variant="secondary" size="icon" class="rounded-full">
               <CircleUser class="h-5 w-5" />
@@ -210,7 +211,7 @@ const colorMode = useColorMode()
             <DropdownMenuSeparator />
             <DropdownMenuItem>Logout</DropdownMenuItem>
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> -->
 
         <DropdownMenu>
         <DropdownMenuTrigger as-child>
@@ -232,6 +233,9 @@ const colorMode = useColorMode()
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      <UserButton after-sign-out-url="/sign-in" />
+      
       </header>
 
         <!-- Main Section  -->
