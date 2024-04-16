@@ -37,7 +37,7 @@ interface LeadsResponse {
 }
 
 /* Manual handling of loading using v-if="pending" */
-// const { pending, data: leads, error } = useFetch<LeadsResponse>("http://localhost:8000/agent/leads", {
+// const { pending, data: leads, error } = useFetch<LeadsResponse>("https://api.tappy.com.ph/agent/leads", {
 //   lazy: true
 // })
 
@@ -45,7 +45,7 @@ interface LeadsResponse {
     pending: it is not necessary i just added it so that 
     i don't have to add/remove it when changing from manual handling vs this
 */
-const { pending, data: leads } = await useFetch<LeadsResponse>("http://localhost:8000/agent/leads")
+const { pending, data: leads } = await useFetch<LeadsResponse>("https://api.tappy.com.ph/agent/leads")
 
 /* Sample Response:
 {

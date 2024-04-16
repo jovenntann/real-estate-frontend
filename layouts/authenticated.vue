@@ -1,12 +1,19 @@
 <script setup lang="ts">
+// Clerk Guard
+const { data: user } = await useFetch('/api/protected', {
+  headers: useRequestHeaders(),
+})
+if (!user.value)
+  navigateTo('/sign-in')
+
+// Pusher Store Events
 import { usePusherEventsStore } from '~/store/pusherEvents';
+usePusherEventsStore();
 
 import { CircleUser, Menu, Package2, Search, Users } from 'lucide-vue-next';
 import { Bell, Home, Mail, Package, LineChart } from 'lucide-vue-next'
 import { Icon } from '@iconify/vue'
 const colorMode = useColorMode()
-
-usePusherEventsStore();
 
 </script>
 

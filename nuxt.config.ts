@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     'shadcn-nuxt',
     '@pinia/nuxt',
+    "@nuxt/image"
   ],
   shadcn: {
     /**
@@ -23,5 +24,14 @@ export default defineNuxtConfig({
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' }
+  },
+  build: {
+    transpile: ['vue-clerk', '@clerk/clerk-js'],
+  },
+  runtimeConfig: {
+    public: {
+      clerkPublishableKey: process.env.CLERK_PUBLISHABLE_KEY,
+    },
+    clerkSecretKey: process.env.CLERK_SECRET_KEY,
   },
 })

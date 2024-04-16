@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { Activity, ArrowUpRight, CreditCard, DollarSign, Users } from 'lucide-vue-next';
-
 /* Custom Layout */
-
 definePageMeta({
   layout: 'authenticated'
 })
-
 </script>
 
 <template>
