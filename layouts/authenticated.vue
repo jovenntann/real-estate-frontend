@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { UserButton } from 'vue-clerk'
+import { useNuxtApp } from '#app'
+import { UserButton } from 'vue-clerk';
 // Clerk Guard
 const { data: user } = await useFetch('/api/protected', {
   headers: useRequestHeaders(),
-})
+});
 if (!user.value)
-  navigateTo('/sign-in')
+  navigateTo('/sign-in');
 
 // Pusher Store Events
 import { usePusherEventsStore } from '~/store/pusherEvents';

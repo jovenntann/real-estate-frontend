@@ -1,10 +1,13 @@
-import usePusher from '~/plugins/pusher.client';
 import { useMessagesStore } from '~/store/messages';
+import Pusher from 'pusher-js';
 
 export const usePusherEventsStore = defineStore('pusherEventsStore', () => {
   const { addMessageToList } = useMessagesStore();
 
-  const { pusher } = usePusher();
+  const pusher = new Pusher(useRuntimeConfig().public.clerkPublishableKey as string, {
+    cluster: 'ap1',
+    forceTLS: true
+  });
 
   onMounted(() => {
     const channel = pusher.subscribe('my-channel');
@@ -12,8 +15,7 @@ export const usePusherEventsStore = defineStore('pusherEventsStore', () => {
       console.log(data);
       addMessageToList(data);
     });
-  });
+  }); 
 
   return {};
 });
-
