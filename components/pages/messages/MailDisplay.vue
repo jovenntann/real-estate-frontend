@@ -31,20 +31,33 @@
   const isLoadingMoreMessages = ref(false)
   const nextPage = ref(2)
 
+  const loadMoreMessages = async () => {
+    if (isLoadingMoreMessages.value) return;
+    isLoadingMoreMessages.value = true;
+    try {
+      // Fetch more messages from the server
+      const { data: moreMessages } = await useFetch<MessagesResponse>(`${apiEndpoint}/agent/leads/${selectedLeadMessageId.value}/messages?page=${nextPage.value}`);
+      if (moreMessages.value) {
+        // Prepend the new messages to the existing list
+        setMessages([...moreMessages.value.results.reverse(), ...messagesList.value]);
+        nextPage.value++; // Increment nextPage for the next load
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        // Stop loading more messages when a 404 status code is returned
+        isLoadingMoreMessages.value = false;
+      }
+    } finally {
+      isLoadingMoreMessages.value = false;
+    }
+}
+
   onMounted(() => {
     scrollContainer.value = document.querySelector('.scroll-container')
-    // Inifite Scroll
+    // Infinite Scroll
     const observer = new IntersectionObserver(async ([entry]) => {
       if (entry.isIntersecting) {
-        isLoadingMoreMessages.value = true;
-        // Fetch more messages from the server
-        const { data: moreMessages } = await useFetch<MessagesResponse>(`${apiEndpoint}/agent/leads/${selectedLeadMessageId.value}/messages?page=${nextPage.value}`);
-        if (moreMessages.value) {
-          // Prepend the new messages to the existing list
-          setMessages([...moreMessages.value.results.reverse(), ...messagesList.value]);
-          isLoadingMoreMessages.value = false;
-          nextPage.value++; // Increment nextPage for the next load
-        }
+        await loadMoreMessages();
       }
     });
     observer.observe(loadMoreRef.value);
@@ -58,6 +71,8 @@
         const { data: messages } = await useFetch<MessagesResponse>(`${apiEndpoint}/agent/leads/${selectedLeadMessageId.value}/messages`)
         if (messages.value) {
           setMessages(messages.value.results.reverse());
+          // Reset the inifity scroll page
+          nextPage.value = 2
           // Scroll to last massage
           await nextTick();
           if (messages.value && messages.value.results && messages.value.results.length > 0) {
@@ -283,12 +298,14 @@
         <!-- TODO: This need to be browser side compatible -->
         <ScrollArea class="h-screen flex max-h-[70vh]">
           <div class="flex-1 flex flex-col gap-2 m-4">
-            <div ref="loadMoreRef" class="text-center py-2">Load more...</div>
-            <Button class="w-full" :disabled="isLoading" @click="loadMore">
-              <Loader2 v-if="isLoadingMoreMessages" class="w-4 h-4 mr-2 animate-spin" />
-              <span v-if="!isLoadingMoreMessages">Load More</span>
-              <span v-else>Loading...</span>
-            </Button>
+            <div ref="loadMoreRef" class="text-center py-2">
+              <Button class="w-full" :disabled="isLoadingMoreMessages" @click="loadMoreMessages">
+                <Loader2 v-if="isLoadingMoreMessages" class="w-4 h-4 mr-2 animate-spin" />
+                <span v-if="!isLoadingMoreMessages">Load More</span>
+                <span v-else>Loading...</span>  
+              </Button>
+            </div>
+
             <div
             v-for="(message, index) in messagesList"
             :key="index"
