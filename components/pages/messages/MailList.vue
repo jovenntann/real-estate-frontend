@@ -22,7 +22,9 @@ const leadMessagesStore = useLeadMessagesStore()
 const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, setSelectedLeadMessageId, setSelectedLead } = leadMessagesStore
 const { leadMessagesList, selectedLeadMessageId } = storeToRefs(leadMessagesStore)
 
-const { data: leadMessages } = await useFetch<LeadMessagesResponse>("https://api.tappy.com.ph/agent/leads/messages")
+
+const { public: { apiEndpoint } } = useRuntimeConfig();
+const { data: leadMessages } = await useFetch<LeadMessagesResponse>(`${apiEndpoint}/agent/leads/messages`)
 if (leadMessages.value) {
   setLeadMessages(leadMessages.value.results);
   // Let us set the first value from results

@@ -45,7 +45,8 @@ interface LeadsResponse {
     pending: it is not necessary i just added it so that 
     i don't have to add/remove it when changing from manual handling vs this
 */
-const { pending, data: leads } = await useFetch<LeadsResponse>("https://api.tappy.com.ph/agent/leads")
+const { public: { apiEndpoint } } = useRuntimeConfig();
+const { pending, data: leads } = await useFetch<LeadsResponse>(`${apiEndpoint}/agent/leads`);
 
 /* Sample Response:
 {

@@ -30,10 +30,12 @@
     scrollContainer.value = document.querySelector('.scroll-container')
   })
 
+  const { public: { apiEndpoint } } = useRuntimeConfig();
+
   watchEffect(() => {
     const fetchMessages = async () => {
       if (selectedLeadMessageId.value) {
-        const { data: messages } = await useFetch<MessagesResponse>(`https://api.tappy.com.ph/agent/leads/${selectedLeadMessageId.value}/messages`)
+        const { data: messages } = await useFetch<MessagesResponse>(`${apiEndpoint}/agent/leads/${selectedLeadMessageId.value}/messages`)
         if (messages.value) {
           setMessages(messages.value.results);
           // Scroll to last massage
@@ -62,7 +64,7 @@
       message: message.value
     };
 
-    const { data: response } = await useFetch<Message>(`https://api.tappy.com.ph/agent/leads/${selectedLeadMessageId.value}/messages`, {
+    const { data: response } = await useFetch<Message>(`${apiEndpoint}/agent/leads/${selectedLeadMessageId.value}/messages`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -88,7 +90,6 @@
       }
     }
   };
-
   </script>
 
   <template>
