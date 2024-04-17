@@ -328,10 +328,7 @@
                 (message.source === 'messenger' && message.sender === 'page') ? 'bg-blue-500 text-white' : (message.source === 'messenger' && message.sender === 'lead') ? 'bg-gray-200 text-black' : 'bg-green-500 text-white',
             )"
             >
-            <div class="whitespace-pre-line max-w-full">
-              <p>Message ID: {{ message.id }}</p>
-              <p>{{ message.message }}</p>
-            </div>
+            <div class="whitespace-pre-line max-w-full">{{ message.message }}</div>
             <div v-if="message.messenger_attachments">
               <div v-for="(attachment, index) in message.messenger_attachments.data" :key="index">
                 <img v-if="attachment.image_data" :src="attachment.image_data.url" class="rounded-lg" style="max-width: 200px; max-height: 200px;" />
