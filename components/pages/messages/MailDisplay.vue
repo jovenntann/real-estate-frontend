@@ -28,6 +28,7 @@
 
   // Inifite Scroll
   const loadMoreRef = ref(null);
+  const isLoadingMoreMessages = ref(false)
   const nextPage = ref(2)
 
   onMounted(() => {
@@ -35,16 +36,17 @@
     // Inifite Scroll
     const observer = new IntersectionObserver(async ([entry]) => {
       if (entry.isIntersecting) {
+        isLoadingMoreMessages.value = true;
         // Fetch more messages from the server
         const { data: moreMessages } = await useFetch<MessagesResponse>(`${apiEndpoint}/agent/leads/${selectedLeadMessageId.value}/messages?page=${nextPage.value}`);
         if (moreMessages.value) {
           // Prepend the new messages to the existing list
           setMessages([...moreMessages.value.results.reverse(), ...messagesList.value]);
+          isLoadingMoreMessages.value = false;
           nextPage.value++; // Increment nextPage for the next load
         }
       }
     });
-
     observer.observe(loadMoreRef.value);
   })
 
@@ -282,6 +284,11 @@
         <ScrollArea class="h-screen flex max-h-[70vh]">
           <div class="flex-1 flex flex-col gap-2 m-4">
             <div ref="loadMoreRef" class="text-center py-2">Load more...</div>
+            <Button class="w-full" :disabled="isLoading" @click="loadMore">
+              <Loader2 v-if="isLoadingMoreMessages" class="w-4 h-4 mr-2 animate-spin" />
+              <span v-if="!isLoadingMoreMessages">Load More</span>
+              <span v-else>Loading...</span>
+            </Button>
             <div
             v-for="(message, index) in messagesList"
             :key="index"
