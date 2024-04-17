@@ -26,6 +26,8 @@
 
   const scrollContainer: Ref<HTMLElement | null> = ref(null);
 
+  let lastMostRecentMessageId = 0;
+
   // Inifite Scroll
   const loadMoreRef = ref(null);
   const isLoadingMoreMessages = ref(false)
@@ -41,6 +43,14 @@
         // Prepend the new messages to the existing list
         setMessages([...moreMessages.value.results.reverse(), ...messagesList.value]);
         nextPage.value++; // Increment nextPage for the next load
+
+        // Scroll to previous oldest chat before the new items
+        await nextTick();
+        const el = document.querySelector(`.message-id-${lastMostRecentMessageId}`);
+        if (el) {
+          el.scrollIntoView();
+        }
+        lastMostRecentMessageId = moreMessages.value.results[moreMessages.value.results.length - 10].id;
       }
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -72,11 +82,13 @@
         if (messages.value) {
           setMessages(messages.value.results.reverse());
           // Reset the inifity scroll page
+          lastMostRecentMessageId = 0
           nextPage.value = 2
-          // Scroll to last massage
+          // Scroll to last massage 
           await nextTick();
           if (messages.value && messages.value.results && messages.value.results.length > 0) {
             const el = document.querySelector(`.message-id-${messages.value.results[messages.value.results.length - 1].id}`);
+            lastMostRecentMessageId = messages.value.results[messages.value.results.length - 10].id;
             if (el) {
               el.scrollIntoView();
             }
@@ -316,7 +328,10 @@
                 (message.source === 'messenger' && message.sender === 'page') ? 'bg-blue-500 text-white' : (message.source === 'messenger' && message.sender === 'lead') ? 'bg-gray-200 text-black' : 'bg-green-500 text-white',
             )"
             >
-            <div class="whitespace-pre-line max-w-full">{{ message.message }}</div>
+            <div class="whitespace-pre-line max-w-full">
+              <p>Message ID: {{ message.id }}</p>
+              <p>{{ message.message }}</p>
+            </div>
             <div v-if="message.messenger_attachments">
               <div v-for="(attachment, index) in message.messenger_attachments.data" :key="index">
                 <img v-if="attachment.image_data" :src="attachment.image_data.url" class="rounded-lg" style="max-width: 200px; max-height: 200px;" />
