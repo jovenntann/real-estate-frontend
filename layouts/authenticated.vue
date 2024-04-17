@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import { useNuxtApp } from '#app'
-import { UserButton } from 'vue-clerk';
+import { UserButton, useAuth } from 'vue-clerk';
+
+const { isLoaded, userId, sessionId, getToken } = useAuth()
+if (isLoaded.value && userId.value) {
+  console.log(`Hello, ${userId.value}`);
+  getToken.value().then(token => {
+    console.log(token)
+  });
+}
+
+
 // Clerk Guard
 const { data: user } = await useFetch('/api/protected', {
   headers: useRequestHeaders(),
