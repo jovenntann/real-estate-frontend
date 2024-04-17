@@ -37,7 +37,7 @@
       if (selectedLeadMessageId.value) {
         const { data: messages } = await useFetch<MessagesResponse>(`${apiEndpoint}/agent/leads/${selectedLeadMessageId.value}/messages`)
         if (messages.value) {
-          setMessages(messages.value.results);
+          setMessages(messages.value.results.reverse());
           // Scroll to last massage
           await nextTick();
           if (messages.value && messages.value.results && messages.value.results.length > 0) {
