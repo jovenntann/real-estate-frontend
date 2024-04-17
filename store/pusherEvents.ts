@@ -4,7 +4,7 @@ import Pusher from 'pusher-js';
 export const usePusherEventsStore = defineStore('pusherEventsStore', () => {
   const { addMessageToList } = useMessagesStore();
 
-  const pusher = new Pusher(useRuntimeConfig().public.clerkPublishableKey as string, {
+  const pusher = new Pusher(useRuntimeConfig().public.pusherAppKey as string, {
     cluster: 'ap1',
     forceTLS: true
   });
