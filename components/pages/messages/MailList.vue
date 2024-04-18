@@ -81,7 +81,7 @@ const handleButtonClick = async (leadMessageId: number, leadMessage: LeadMessage
             <!-- <Badge v-for="label of message.labels" :key="label" :variant="getBadgeVariantFromLabel(label)">
               {{ label }}
             </Badge> -->
-            <Badge :variant="leadMessage.status.status === 'Qualified' ? 'default' : leadMessage.status.status === 'New' ? 'outline' : leadMessage.status.status === 'Interested' ? 'destructive' : 'outline'">
+            <Badge :variant="leadMessage.status.color">
               {{ leadMessage.status.status }}
             </Badge>
             <Badge variant="outline">
