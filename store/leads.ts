@@ -25,6 +25,7 @@ interface LeadData {
 
 export const useLeadsStore = defineStore('leadsStore', () => {
   const leadsList = ref<LeadData[]>([]);
+  const lead = ref<LeadData | null>(null);
 
   function addLeadToList(lead: LeadData) {
     leadsList.value.push(lead);
@@ -37,5 +38,16 @@ export const useLeadsStore = defineStore('leadsStore', () => {
     }
   }
 
-  return { addLeadToList, removeLeadFromList, leadsList };
+  function addLead(newLead: LeadData) {
+    lead.value = newLead;
+  }
+
+  function getLead(id: number) {
+    const foundLead = leadsList.value.find(l => l.id === id);
+    if (foundLead) {
+      lead.value = foundLead;
+    }
+  }
+
+  return { addLeadToList, removeLeadFromList, leadsList, lead, addLead, getLead };
 });

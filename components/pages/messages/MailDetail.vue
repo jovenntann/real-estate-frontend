@@ -1,45 +1,11 @@
 <script setup lang="ts">
 import {
-  ChevronLeft,
-  CircleUser,
-  Home,
-  LineChart,
-  Package,
-  Package2,
-  PanelLeft,
-  PlusCircle,
-  Search,
-  Settings,
-  ShoppingCart,
   Upload,
-  Users2,
 } from 'lucide-vue-next'
-
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 import {
   Select,
   SelectContent,
@@ -47,11 +13,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
+
+// Lead 
+import { useLeadsStore } from '~/store/leads'
+const leadStore = useLeadsStore()
+const { lead } = storeToRefs(leadStore)
+const { addLead, getLead } = leadStore
+
 </script>
 
 <template>
@@ -129,7 +97,7 @@ import {
                       alt="Product image"
                       class="aspect-square w-full rounded-md object-cover"
                       height="300"
-                      src="/placeholder.svg"
+                      src="https://images.pexels.com/photos/2705756/pexels-photo-2705756.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                       width="300"
                     >
                     <div class="grid grid-cols-3 gap-2">
@@ -138,7 +106,7 @@ import {
                           alt="Product image"
                           class="aspect-square w-full rounded-md object-cover"
                           height="84"
-                          src="/placeholder.svg"
+                          src="https://images.pexels.com/photos/4946727/pexels-photo-4946727.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                           width="84"
                         >
                       </button>
@@ -147,7 +115,7 @@ import {
                           alt="Product image"
                           class="aspect-square w-full rounded-md object-cover"
                           height="84"
-                          src="/placeholder.svg"
+                          src="https://images.pexels.com/photos/6243685/pexels-photo-6243685.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                           width="84"
                         >
                       </button>
