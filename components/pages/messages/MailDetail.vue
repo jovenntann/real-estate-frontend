@@ -67,7 +67,7 @@ const { addLead, getLead } = leadStore
                       <Label for="status">Next Action</Label>
                       <Select>
                         <SelectTrigger :id="lead.next_action.id" aria-label="Select status">
-                          <SelectValue :placeholder="lead.next_action.id" />
+                          <SelectValue :placeholder="lead.next_action.action" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="for-confirmation">
