@@ -1,44 +1,75 @@
 import { defineStore } from 'pinia';
 
-interface Page {
+export interface Company {
   id: number;
-  page_name: string;
-  page_id: string;
-  access_token: string;
+  company_name: string;
+  address: string;
+  phone_number: string;
+  company_size: number;
+  industry: string;
 }
 
-interface Lead {
+export interface Status {
+  id: number;
+  status: string;
+  color: "default" | "secondary" | "destructive" | "outline";
+  description: string | null;
+}
+
+export interface NextAction {
+  id: number;
+  action: string;
+  color: "default" | "secondary" | "destructive" | "outline";
+  description: string | null;
+}
+
+export interface LastMessage {
+  id: number;
+  source: string;
+  sender: string;
+  message: string;
+  is_read: boolean;
+  timestamp: string;
+}
+
+export interface Lead {
   id: number;
   first_name: string;
   last_name: string;
   email: string;
-  phone_number: string;
-  company: number;
-  status: number;
+  phone_number: string | null;
+  company: Company;
+  status: Status;
+  next_action: NextAction;
+  facebook_id: string,
+  facebook_profile_pic: string,
+  last_message_at: string,
+  last_message: LastMessage;
 }
 
-interface LeadData {
-  id: number;
-  page: Page;
-  lead: Lead;
+export interface LeadResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Lead[];
 }
 
 export const useLeadsStore = defineStore('leadsStore', () => {
-  const leadsList = ref<LeadData[]>([]);
-  const lead = ref<LeadData | null>(null);
+  const leadsList = ref<Lead[]>([]);
+  const lead = ref<Lead | null>(null);
 
-  function addLeadToList(lead: LeadData) {
+  function addLeadToList(lead: Lead) {
     leadsList.value.push(lead);
   }
 
-  function removeLeadFromList(lead: LeadData) {
+  function removeLeadFromList(lead: Lead) {
     const index = leadsList.value.findIndex(l => l.id === lead.id);
     if (index > -1) {
       leadsList.value.splice(index, 1);
     }
   }
 
-  function addLead(newLead: LeadData) {
+  function addLead(newLead: Lead) {
     lead.value = newLead;
   }
 

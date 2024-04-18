@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/select'
 
 // Lead 
+import type { Company, Status, NextAction, LastMessage, Lead } from '~/store/leads'
 import { useLeadsStore } from '~/store/leads'
 const leadStore = useLeadsStore()
 const { lead } = storeToRefs(leadStore)
@@ -35,15 +36,15 @@ const { addLead, getLead } = leadStore
             <div class="grid auto-rows-max items-start gap-2 lg:gap-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Joven Tan</CardTitle>
+                  <CardTitle> {{ lead.first_name }} {{ lead.last_name}}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div class="grid gap-6">
                     <div class="grid gap-3">
                       <Label for="status">Lead Status</Label>
                       <Select>
-                        <SelectTrigger id="status" aria-label="Select status">
-                          <SelectValue placeholder="New Lead" />
+                        <SelectTrigger :id="lead.status.id" aria-label="Select status">
+                          <SelectValue :placeholder="lead.status.status" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="new-lead">
@@ -65,8 +66,8 @@ const { addLead, getLead } = leadStore
                     <div class="grid gap-3">
                       <Label for="status">Next Action</Label>
                       <Select>
-                        <SelectTrigger id="status" aria-label="Select status">
-                          <SelectValue placeholder="For Site Tripping" />
+                        <SelectTrigger :id="lead.next_action.id" aria-label="Select status">
+                          <SelectValue :placeholder="lead.next_action.id" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="for-confirmation">

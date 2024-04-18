@@ -22,19 +22,35 @@ const leadMessagesStore = useLeadMessagesStore()
 const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, setSelectedLeadMessageId, setSelectedLead } = leadMessagesStore
 const { leadMessagesList, selectedLeadMessageId } = storeToRefs(leadMessagesStore)
 
+// Lead 
+import { useLeadsStore } from '~/store/leads'
+const leadStore = useLeadsStore()
+const { lead } = storeToRefs(leadStore)
+const { addLead, getLead } = leadStore
 
 const { public: { apiEndpoint } } = useRuntimeConfig();
+
+const fetchLeadRecord = async (leadId: number) => {
+  const { data: leadRecord } = await useFetch(`${apiEndpoint}/agent/leads/${leadId}`)
+  if (leadRecord.value) {
+    addLead(leadRecord.value);
+  }
+}
+
 const { data: leadMessages } = await useFetch<LeadMessagesResponse>(`${apiEndpoint}/agent/leads/messages`)
 if (leadMessages.value) {
   setLeadMessages(leadMessages.value.results);
   // Let us set the first value from results
   setSelectedLeadMessageId(leadMessages.value.results[0].id)
+  fetchLeadRecord(leadMessages.value.results[0].id);
+  // Set Selected Lead for Lead Details
   setSelectedLead(leadMessages.value.results[0])
 }
 
 const handleButtonClick = async (leadMessageId: number, leadMessage: LeadMessage) => {
   setSelectedLeadMessageId(leadMessageId)
   setSelectedLead(leadMessage)
+  fetchLeadRecord(leadMessageId);
 }
 </script>
 
