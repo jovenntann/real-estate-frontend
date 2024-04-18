@@ -81,12 +81,16 @@ const handleButtonClick = async (leadMessageId: number, leadMessage: LeadMessage
             <!-- <Badge v-for="label of message.labels" :key="label" :variant="getBadgeVariantFromLabel(label)">
               {{ label }}
             </Badge> -->
-            <Badge :variant="leadMessage.status.color">
-              {{ leadMessage.status.status }}
-            </Badge>
-            <Badge variant="outline">
-              Waiting for Reply
-            </Badge>
+            <div v-if="leadMessage.status !== null && leadMessage.status.color">
+              <Badge :variant="leadMessage.status.color">
+                {{ leadMessage.status.status }}
+              </Badge>
+            </div>
+            <div v-if="leadMessage.next_action !== null && leadMessage.next_action.color">
+              <Badge :variant="leadMessage.next_action.color">
+                {{ leadMessage.next_action.action }}
+              </Badge>
+            </div>
           </div>
         </button>
       </TransitionGroup>

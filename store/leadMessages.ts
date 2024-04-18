@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 
+
 export interface LeadMessageCompany {
   id: number;
   company_name: string;
@@ -12,6 +13,15 @@ export interface LeadMessageCompany {
 export interface LeadMessageStatus {
   id: number;
   status: string;
+  color: "default" | "secondary" | "destructive" | "outline";
+  description: string | null;
+}
+
+export interface LeadMessageNextAction {
+  id: number;
+  action: string;
+  color: "default" | "secondary" | "destructive" | "outline";
+  description: string | null;
 }
 
 export interface LeadMessageMessage {
@@ -28,9 +38,10 @@ export interface LeadMessage {
   first_name: string;
   last_name: string;
   email: string;
-  phone_number: string;
+  phone_number: string | null;
   company: LeadMessageCompany;
   status: LeadMessageStatus;
+  next_action: LeadMessageNextAction;
   facebook_id: string,
   facebook_profile_pic: string,
   last_message_at: string,
