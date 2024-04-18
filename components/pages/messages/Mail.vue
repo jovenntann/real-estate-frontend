@@ -8,6 +8,7 @@ import { refDebounced } from '@vueuse/core'
 import type { Mail } from './data/mails'
 import MailList from './MailList.vue'
 import MailDisplay from './MailDisplay.vue'
+import MailDetail from './MailDetail.vue'
 
 import CardChat from './CardChat.vue'
 
@@ -25,7 +26,7 @@ interface MailProps {
 
 const props = withDefaults(defineProps<MailProps>(), {
   defaultCollapsed: false,
-  defaultLayout: () => [ 265, 655],
+  defaultLayout: () => [265, 440, 265],
 })  
 
 const isCollapsed = ref(props.defaultCollapsed)
@@ -116,7 +117,10 @@ function onExpand() {
       <ResizableHandle id="resize-handle-1" with-handle />
       <ResizablePanel id="resize-panel-2" :default-size="defaultLayout[1]">
         <MailDisplay :mail="selectedMailData" />
-        <!-- <CardChat/> -->
+      </ResizablePanel>
+      <ResizableHandle id="resize-handle-2" with-handle />
+      <ResizablePanel id="resize-panel-3" :default-size="defaultLayout[2]">
+        <MailDetail />
       </ResizablePanel>
     </ResizablePanelGroup>
   </TooltipProvider>
