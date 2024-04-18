@@ -52,8 +52,8 @@
         }
         lastMostRecentMessageId = moreMessages.value.results[moreMessages.value.results.length - 10].id;
       }
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
+    } catch (error: any) {
+      if (error.response) {
         // Stop loading more messages when a 404 status code is returned
         isLoadingMoreMessages.value = false;
       }
@@ -70,7 +70,9 @@
         await loadMoreMessages();
       }
     });
-    observer.observe(loadMoreRef.value);
+    if (loadMoreRef.value) {
+      observer.observe(loadMoreRef.value);
+    }
   })
 
   const { public: { apiEndpoint } } = useRuntimeConfig();
