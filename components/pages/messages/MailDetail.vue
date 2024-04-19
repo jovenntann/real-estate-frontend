@@ -36,13 +36,13 @@ const { addLead, getLead } = leadStore
             <div class="grid auto-rows-max items-start gap-2 lg:gap-4">
               <Card>
                 <CardHeader>
-                  <CardTitle> {{ lead.first_name }} {{ lead.last_name}}</CardTitle>
+                  <CardTitle v-if="lead"> {{ lead.first_name }} {{ lead.last_name}}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div class="grid gap-6">
                     <div class="grid gap-3">
                       <Label for="status">Lead Status</Label>
-                      <Select>
+                      <Select v-if="lead && lead.status">
                         <SelectTrigger :id="lead.status.id" aria-label="Select status">
                           <SelectValue :placeholder="lead.status.status" />
                         </SelectTrigger>
@@ -65,7 +65,7 @@ const { addLead, getLead } = leadStore
                   <div class="grid gap-6">
                     <div class="grid gap-3">
                       <Label for="status">Next Action</Label>
-                      <Select>
+                      <Select v-if="lead && lead.next_action">
                         <SelectTrigger :id="lead.next_action.id" aria-label="Select status">
                           <SelectValue :placeholder="lead.next_action.action" />
                         </SelectTrigger>

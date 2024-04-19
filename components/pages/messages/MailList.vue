@@ -31,9 +31,9 @@ const { addLead, getLead } = leadStore
 const { public: { apiEndpoint } } = useRuntimeConfig();
 
 const fetchLeadRecord = async (leadId: number) => {
-  const { data: leadRecord } = await useFetch(`${apiEndpoint}/agent/leads/${leadId}`)
-  if (leadRecord.value) {
-    addLead(leadRecord.value);
+  const leadRecord = await $fetch(`${apiEndpoint}/agent/leads/${leadId}`)
+  if (leadRecord) {
+    addLead(leadRecord);
   }
 }
 

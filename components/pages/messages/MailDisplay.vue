@@ -38,10 +38,10 @@
     isLoadingMoreMessages.value = true;
     try {
       // Fetch more messages from the server
-      const { data: moreMessages } = await useFetch<MessagesResponse>(`${apiEndpoint}/agent/leads/${selectedLeadMessageId.value}/messages?page=${nextPage.value}`);
-      if (moreMessages.value) {
+      const moreMessages = await $fetch(`${apiEndpoint}/agent/leads/${selectedLeadMessageId.value}/messages?page=${nextPage.value}`);
+      if (moreMessages) {
         // Prepend the new messages to the existing list
-        setMessages([...moreMessages.value.results.reverse(), ...messagesList.value]);
+        setMessages([...moreMessages.results.reverse(), ...messagesList.value]);
         nextPage.value++; // Increment nextPage for the next load
 
         // Scroll to previous oldest chat before the new items
@@ -50,7 +50,7 @@
         if (el) {
           el.scrollIntoView();
         }
-        lastMostRecentMessageId = moreMessages.value.results[moreMessages.value.results.length - 10].id;
+        lastMostRecentMessageId = moreMessages.results[moreMessages.results.length - 10].id;
       }
     } catch (error: any) {
       if (error.response) {
@@ -60,7 +60,7 @@
     } finally {
       isLoadingMoreMessages.value = false;
     }
-}
+  }
 
   onMounted(() => {
     scrollContainer.value = document.querySelector('.scroll-container')
@@ -80,17 +80,17 @@
   watchEffect(() => {
     const fetchMessages = async () => {
       if (selectedLeadMessageId.value) {
-        const { data: messages } = await useFetch<MessagesResponse>(`${apiEndpoint}/agent/leads/${selectedLeadMessageId.value}/messages`)
-        if (messages.value) {
-          setMessages(messages.value.results.reverse());
+        const messages = await $fetch(`${apiEndpoint}/agent/leads/${selectedLeadMessageId.value}/messages`)
+        if (messages) {
+          setMessages(messages.results.reverse());
           // Reset the inifity scroll page
           lastMostRecentMessageId = 0
           nextPage.value = 2
           // Scroll to last massage 
           await nextTick();
-          if (messages.value && messages.value.results && messages.value.results.length > 0) {
-            const el = document.querySelector(`.message-id-${messages.value.results[messages.value.results.length - 1].id}`);
-            lastMostRecentMessageId = messages.value.results[messages.value.results.length - 10].id;
+          if (messages && messages.results && messages.results.length > 0) {
+            const el = document.querySelector(`.message-id-${messages.results[messages.results.length - 1].id}`);
+            lastMostRecentMessageId = messages.results[messages.results.length - 10].id;
             if (el) {
               el.scrollIntoView();
             }

@@ -26,7 +26,7 @@ interface MailProps {
 
 const props = withDefaults(defineProps<MailProps>(), {
   defaultCollapsed: false,
-  defaultLayout: () => [265, 440, 265],
+  defaultLayout: () => [265, 655, 200],
 })  
 
 const isCollapsed = ref(props.defaultCollapsed)
@@ -119,7 +119,7 @@ function onExpand() {
         <MailDisplay :mail="selectedMailData" />
       </ResizablePanel>
       <ResizableHandle id="resize-handle-2" with-handle />
-      <ResizablePanel id="resize-panel-3" :default-size="defaultLayout[2]">
+      <ResizablePanel id="resize-panel-3" :default-size="defaultLayout[2]" :min-size="15" :max-size="30">
         <MailDetail />
       </ResizablePanel>
     </ResizablePanelGroup>
