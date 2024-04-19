@@ -14,6 +14,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
+// Company
+import { useCompanyStore } from '~/store/company';
+const companyStore = useCompanyStore()
+const { company } = storeToRefs(companyStore)
+
 // Lead 
 import type { Company, Status, NextAction, LastMessage, Lead } from '~/store/leads'
 import { useLeadsStore } from '~/store/leads'
@@ -71,14 +76,11 @@ const status: StatusType[] = [
                           <SelectValue :placeholder="lead.status.status" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="new-lead">
-                            New Lead
-                          </SelectItem>
-                          <SelectItem value="qualified">
-                            Qualified
-                          </SelectItem>
-                          <SelectItem value="interested">
-                            Interested
+                          <SelectItem 
+                            v-for="status in company.lead_statuses" 
+                            :key="status.id.toString()" 
+                            :value="status.id.toString()">
+                            {{ status.status }}
                           </SelectItem>
                         </SelectContent>
                       </Select>
@@ -94,14 +96,11 @@ const status: StatusType[] = [
                           <SelectValue :placeholder="lead.next_action.action" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="for-confirmation">
-                            Schedule Tripping
-                          </SelectItem>
-                          <SelectItem value="for-site-tripping">
-                            Follow-up Reservation
-                          </SelectItem>
-                          <SelectItem value="answer-question">
-                            Answer Question
+                          <SelectItem 
+                            v-for="status in company.lead_next_actions" 
+                            :key="status.id.toString()" 
+                            :value="status.id.toString()">
+                            {{ status.action }}
                           </SelectItem>
                         </SelectContent>
                       </Select>
