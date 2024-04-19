@@ -1,6 +1,12 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { useNuxtApp } from '#app'
 import { UserButton, useAuth } from 'vue-clerk';
+
+import { CircleUser, Menu, Package2, Search, Users } from 'lucide-vue-next';
+import { Bell, Home, Mail, Package, LineChart } from 'lucide-vue-next'
+import { Icon } from '@iconify/vue'
+const colorMode = useColorMode()
 
 const { isLoaded, userId, sessionId, getToken } = useAuth()
 if (isLoaded.value && userId.value) {
@@ -9,7 +15,6 @@ if (isLoaded.value && userId.value) {
     console.log(token)
   });
 }
-
 
 // Clerk Guard
 const { data: user } = await useFetch('/api/protected', {
@@ -21,11 +26,6 @@ if (!user.value)
 // Pusher Store Events
 import { usePusherEventsStore } from '~/store/pusherEvents';
 usePusherEventsStore();
-
-import { CircleUser, Menu, Package2, Search, Users } from 'lucide-vue-next';
-import { Bell, Home, Mail, Package, LineChart } from 'lucide-vue-next'
-import { Icon } from '@iconify/vue'
-const colorMode = useColorMode()
 
 </script>
 

@@ -21,6 +21,30 @@ const leadStore = useLeadsStore()
 const { lead } = storeToRefs(leadStore)
 const { addLead, getLead } = leadStore
 
+type StatusType = {
+  id: number;
+  status: string;
+  color: string;
+};
+
+const status: StatusType[] = [
+  {
+    'id': 1,
+    'status': 'New Lead',
+    'color': 'default'
+  },
+  {
+    'id': 2,
+    'status': 'Qualified',
+    'color': 'green'
+  },
+  {
+    'id': 3,
+    'status': 'Interested',
+    'color': 'blue'
+  }
+];
+
 </script>
 
 <template>
