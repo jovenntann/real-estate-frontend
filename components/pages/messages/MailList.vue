@@ -15,23 +15,6 @@ const selectedMail = defineModel<string>('selectedMail', { required: false })
 import { storeToRefs } from 'pinia'
 const { public: { apiEndpoint } } = useRuntimeConfig();
 
-// // Company Store
-import { useCompanyStore } from '~/store/company';
-const companyStore = useCompanyStore()
-const { company } = storeToRefs(companyStore)
-const { setCompany } = companyStore;
-
-
-// Company details by Agent
-const fetchCompanyData = async () => {
-  alert("hello");
-  const companyData = await $fetch(`${apiEndpoint}/agent/system/company`)
-  if (companyData) {
-    console.log(companyData.lead_statuses);
-    setCompany(companyData);
-  }
-}
-
 // Lead Messages
 import { useLeadMessagesStore } from '~/store/leadMessages'
 import type { LeadMessagesResponse, LeadMessage } from '~/store/leadMessages'
@@ -52,10 +35,21 @@ const fetchLeadRecord = async (leadId: number) => {
   }
 }
 
+// Onload: fetch Company data for this Agent
+import { useCompanyStore } from '~/store/company';
+const companyStore = useCompanyStore()
+const { company } = storeToRefs(companyStore)
+const { setCompany } = companyStore;
+
+const { data: companyData } = await useFetch(`${apiEndpoint}/agent/system/company`)
+if (companyData.value) {
+  console.log(companyData.value.lead_statuses);
+  setCompany(companyData.value);
+}
+
+// Onload: fetch Messages
 const { data: leadMessages } = await useFetch<LeadMessagesResponse>(`${apiEndpoint}/agent/leads/messages`)
 if (leadMessages.value) {
-  // Fetch Company data for this Agent
-  fetchCompanyData();
   // Set Lead Messages
   setLeadMessages(leadMessages.value.results);
   // Let us set the first value from results
@@ -65,6 +59,7 @@ if (leadMessages.value) {
   setSelectedLead(leadMessages.value.results[0])
 }
 
+// Events
 const handleButtonClick = async (leadMessageId: number, leadMessage: LeadMessage) => {
   setSelectedLeadMessageId(leadMessageId)
   setSelectedLead(leadMessage)
