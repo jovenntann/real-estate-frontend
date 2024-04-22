@@ -33,23 +33,29 @@ const { addLead, getLead } = leadStore
 const { toast } = useToast()
 const alertChange = async (statusId) => {
   const { public: { apiEndpoint } } = useRuntimeConfig();
-  const response = await fetch(`${apiEndpoint}/agent/leads/${lead.value.id}`, {
-    method: 'PUT',
-    headers: {
-      'accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      "status": statusId
-    })
-  });
-  const data = await response.json();
-  toast({
-    title: 'Status Updated',
-    description: `The new status is: ${data.status.status}`
-  });
-  lead.status.status = data.status.status
-};
+  try {
+    const response = await fetch(`${apiEndpoint}/agent/leads/${lead.value.id}`, {
+      method: 'PUT',
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "status": statusId
+      })
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    toast({
+      title: 'Status Updated',
+      description: `The new status is: ${data.status.status}`
+    });
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
 </script>
 
 <template>
@@ -73,19 +79,17 @@ const alertChange = async (statusId) => {
                       <Label for="status">Lead Status</Label>
                       <Select v-if="lead && lead.status" @update:modelValue="alertChange($event)" v-model="lead.status.status">
                         <SelectTrigger aria-label="Select status">
-                          <SelectValue placeholder="Select an account">
+                          <SelectValue placeholder="Selec value">
                             <div class="flex items-center gap-3">
-                              <span v-if="!isCollapsed">
-                                {{ lead.status.status }}
-                              </span>
+                              {{ lead.status.status }}
                             </div>
                           </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem 
                             v-for="status in company.lead_statuses" 
-                            :key="status.id" 
-                            :value="status.id">
+                            :key="status.id.toString()" 
+                            :value="status.id.toString()">
                             {{ status.status }}
                           </SelectItem>
                         </SelectContent>

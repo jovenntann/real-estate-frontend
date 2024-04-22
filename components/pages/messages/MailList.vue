@@ -43,7 +43,6 @@ const { setCompany } = companyStore;
 
 const { data: companyData } = await useFetch(`${apiEndpoint}/agent/system/company`)
 if (companyData.value) {
-  console.log(companyData.value.lead_statuses);
   setCompany(companyData.value);
 }
 
