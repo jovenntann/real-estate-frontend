@@ -6,6 +6,10 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
+
+import { useToast } from '@/components/ui/toast/use-toast'
+import { Toaster } from "@/components/ui/toast"
+
 import {
   Select,
   SelectContent,
@@ -26,34 +30,25 @@ const leadStore = useLeadsStore()
 const { lead } = storeToRefs(leadStore)
 const { addLead, getLead } = leadStore
 
-type StatusType = {
-  id: number;
-  status: string;
-  color: string;
+const { toast } = useToast()
+const alertChange = async (statusId) => {
+  const { public: { apiEndpoint } } = useRuntimeConfig();
+  const response = await fetch(`${apiEndpoint}/agent/leads/${lead.value.id}`, {
+    method: 'PUT',
+    headers: {
+      'accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "status": statusId
+    })
+  });
+  const data = await response.json();
+  toast({
+    title: 'Status Updated',
+    description: `The new status is: ${data.status.status}`
+  });
 };
-
-const status: StatusType[] = [
-  {
-    'id': 1,
-    'status': 'New Lead',
-    'color': 'default'
-  },
-  {
-    'id': 2,
-    'status': 'Qualified',
-    'color': 'green'
-  },
-  {
-    'id': 3,
-    'status': 'Interested',
-    'color': 'blue'
-  }
-];
-
-const alertChange = (value) => {
-  alert(`The new value is: ${value}`);
-};
-
 </script>
 
 <template>
@@ -75,15 +70,21 @@ const alertChange = (value) => {
                   <div class="grid gap-6">
                     <div class="grid gap-3">
                       <Label for="status">Lead Status</Label>
-                      <Select v-if="lead && lead.status" @update:modelValue="alertChange">
-                        <SelectTrigger :id="lead.status.id" aria-label="Select status">
-                          <SelectValue :placeholder="lead.status.status" />
+                      <Select v-if="lead && lead.status" @update:modelValue="alertChange(lead.status.id)" v-model="lead.status.status">
+                        <SelectTrigger aria-label="Select status">
+                          <SelectValue placeholder="Select an account">
+                            <div class="flex items-center gap-3">
+                              <span v-if="!isCollapsed">
+                                {{ lead.status.status }}
+                              </span>
+                            </div>
+                          </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem 
                             v-for="status in company.lead_statuses" 
-                            :key="status.id.toString()" 
-                            :value="status.id.toString()">
+                            :key="status.status" 
+                            :value="status.status">
                             {{ status.status }}
                           </SelectItem>
                         </SelectContent>
@@ -211,5 +212,6 @@ const alertChange = (value) => {
         </div>
       </main>
     </div>
+    <Toaster />
   </div>
 </template>
