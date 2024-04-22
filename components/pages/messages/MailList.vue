@@ -78,7 +78,7 @@ const loadMoreLeadMessages = async () => {
     // Fetch more lead messages from the server
     const moreLeadMessages = await $fetch(`${apiEndpoint}/agent/leads/messages?page=${nextPage.value}`);
     if (moreLeadMessages) {
-      // Prepend the new lead messages to the existing list
+      // Append the new lead messages to the existing list
       setLeadMessages([...leadMessagesList.value, ...moreLeadMessages.results]);
       nextPage.value++; // Increment nextPage for the next load
     }
@@ -93,14 +93,15 @@ const loadMoreLeadMessages = async () => {
 }
 
 onMounted(() => {
-  // Infinite Scroll
   const observer = new IntersectionObserver(async ([entry]) => {
     if (entry.isIntersecting) {
-      loadMoreMessages();
+      await loadMoreLeadMessages();
     }
-  }, { threshold: 1 });
+  });
 
-  observer.observe(loadMoreRef.value);
+  if (loadMoreRef.value) {
+    observer.observe(loadMoreRef.value);
+  }
 });
 </script>
 
@@ -159,14 +160,14 @@ onMounted(() => {
             </div>
           </div>
         </button>
-        <div ref="loadMoreRef" class="text-center py-2">
-          <Button class="w-full" :disabled="isLoadingMoreMessages" @click="loadMoreLeadMessages">
-            <Loader2 v-if="isLoadingMoreMessages" class="w-4 h-4 mr-2 animate-spin" />
-            <span v-if="!isLoadingMoreMessages">Load More</span>
-            <span v-else>Loading...</span>  
-          </Button>
-        </div>
       </TransitionGroup>
+      <div ref="loadMoreRef" class="text-center py-2">
+        <Button class="w-full" :disabled="isLoadingMoreMessages" @click="loadMoreLeadMessages">
+          <Loader2 v-if="isLoadingMoreMessages" class="w-4 h-4 mr-2 animate-spin" />
+          <span v-if="!isLoadingMoreMessages">Load More</span>
+          <span v-else>Loading...</span>  
+        </Button>
+      </div>
     </div>
   </ScrollArea>
 </template>
