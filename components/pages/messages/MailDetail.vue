@@ -20,6 +20,12 @@ import { useCompanyStore } from '~/store/company';
 const companyStore = useCompanyStore()
 const { company } = storeToRefs(companyStore)
 
+  // Lead Messages
+  import { useLeadMessagesStore } from '~/store/leadMessages'
+  const leadMessagesStore = useLeadMessagesStore()
+  const { selectedLeadMessageId, selectedLead } = storeToRefs(leadMessagesStore)
+  const { updateLeadMessageInList } = leadMessagesStore
+
 // Lead 
 import type { Company, Status, NextAction, LastMessage, Lead } from '~/store/leads'
 import { useLeadsStore } from '~/store/leads'
@@ -46,6 +52,7 @@ const alertChange = async (statusId) => {
   });
   if (leadRecord) {
     setLead(leadRecord)
+    updateLeadMessageInList(leadRecord)
     setToastMessage({
       title: `${leadRecord.first_name} ${leadRecord.last_name} updated`,
       description: `Lead status has been updated to ${leadRecord.status.status}`

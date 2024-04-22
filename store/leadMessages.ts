@@ -68,6 +68,13 @@ export const useLeadMessagesStore = defineStore('leadMessagesStore', () => {
     leadMessagesList.value.push(leadMessage);
   }
 
+  function updateLeadMessageInList(updatedLeadMessage: LeadMessage) {
+    const index = leadMessagesList.value.findIndex(m => m.id === updatedLeadMessage.id);
+    if (index > -1) {
+      leadMessagesList.value[index] = updatedLeadMessage;
+    }
+  }
+
   function removeLeadMessageFromList(leadMessage: LeadMessage) {
     const index = leadMessagesList.value.findIndex(m => m.id === leadMessage.id);
     if (index > -1) {
@@ -90,8 +97,9 @@ export const useLeadMessagesStore = defineStore('leadMessagesStore', () => {
   return { 
     setLeadMessages, 
     addLeadMessageToList, 
-    removeLeadMessageFromList, 
-    leadMessagesList, 
+    removeLeadMessageFromList,
+    updateLeadMessageInList,
+    leadMessagesList,
     
     selectedLeadMessageId,
     setSelectedLeadMessageId,
