@@ -16,6 +16,7 @@
   import { useLeadMessagesStore } from '~/store/leadMessages'
   const leadMessagesStore = useLeadMessagesStore()
   const { selectedLeadMessageId, selectedLead } = storeToRefs(leadMessagesStore)
+  const { addLeadMessageToTopOfList, removeLeadMessageFromList } = useLeadMessagesStore();
 
   // Messages
   import { useMessagesStore } from '~/store/messages' 
@@ -124,6 +125,9 @@
     if (response.value) {
       isLoading.value = false
       addMessageToList(response.value);
+      // Update Lead Message Lists
+      removeLeadMessageFromList(response.value.lead)
+      addLeadMessageToTopOfList(response.value.lead)
       // Scroll to last message
       await nextTick();
       const el = document.querySelector(`.message-id-${response.value.id}`);
