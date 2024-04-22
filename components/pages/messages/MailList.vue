@@ -145,16 +145,13 @@ onMounted(() => {
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <!-- <Badge v-for="label of message.labels" :key="label" :variant="getBadgeVariantFromLabel(label)">
-              {{ label }}
-            </Badge> -->
             <div v-if="leadMessage.status !== null && leadMessage.status.color">
-              <Badge :variant="leadMessage.status.color">
+              <Badge :class="leadMessage.status.color">
                 {{ leadMessage.status.status }}
               </Badge>
             </div>
             <div v-if="leadMessage.next_action !== null && leadMessage.next_action.color">
-              <Badge :variant="leadMessage.next_action.color">
+              <Badge :class="leadMessage.next_action.color">
                 {{ leadMessage.next_action.action }}
               </Badge>
             </div>
