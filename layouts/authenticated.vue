@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, watch, ref, nextTick } from 'vue';
 import { useNuxtApp } from '#app'
 import { UserButton, useAuth } from 'vue-clerk';
 
@@ -7,6 +7,12 @@ import { CircleUser, Menu, Package2, Search, Users } from 'lucide-vue-next';
 import { Bell, Home, Mail, Package, LineChart } from 'lucide-vue-next'
 import { Icon } from '@iconify/vue'
 const colorMode = useColorMode()
+
+// Toaster
+import { useToast } from '@/components/ui/toast/use-toast'
+import { Toaster } from "@/components/ui/toast"
+
+const { toast } = useToast()
 
 const { isLoaded, userId, sessionId, getToken } = useAuth()
 if (isLoaded.value && userId.value) {
@@ -27,9 +33,27 @@ if (!user.value)
 import { usePusherEventsStore } from '~/store/pusherEvents';
 usePusherEventsStore();
 
+// Toast Message
+import type { ToastMessage } from '~/store/layout';
+import { useLayoutStore } from '~/store/layout';
+const layoutStore = useLayoutStore()
+const { toastMessage } = storeToRefs(layoutStore)
+
+watch(toastMessage, (newToastMessage, oldToastMessage) => {
+  if (newToastMessage !== oldToastMessage) {
+    nextTick(() => {
+      toast({
+        title: newToastMessage.title,
+        description: newToastMessage.description
+      });
+    });
+  }
+});
+
 </script>
 
 <template>
+  <Toaster />
   <div class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
     <div class="hidden border-r bg-muted/40 md:block">
       <div class="flex h-full max-h-screen flex-col gap-2">

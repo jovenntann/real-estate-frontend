@@ -7,9 +7,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 
-import { useToast } from '@/components/ui/toast/use-toast'
-import { Toaster } from "@/components/ui/toast"
-
 import {
   Select,
   SelectContent,
@@ -30,7 +27,11 @@ const leadStore = useLeadsStore()
 const { lead } = storeToRefs(leadStore)
 const { addLead, getLead, setLead } = leadStore
 
-const { toast } = useToast()
+import type { ToastMessage } from '~/store/layout';
+import { useLayoutStore } from '~/store/layout';
+const layoutStore = useLayoutStore()
+const { setToastMessage } = layoutStore;
+
 const alertChange = async (statusId) => {
   const { public: { apiEndpoint } } = useRuntimeConfig();
   const leadRecord = await $fetch(`${apiEndpoint}/agent/leads/${lead.value.id}`, {
@@ -45,11 +46,11 @@ const alertChange = async (statusId) => {
   });
   if (leadRecord) {
     setLead(leadRecord)
+    setToastMessage({
+      title: `${leadRecord.first_name} ${leadRecord.last_name} updated`,
+      description: `Lead status has been updated to ${leadRecord.status.status}`
+    });
   }
-  // toast({
-  //   title: 'Status Updated',
-  //   description: `The new status is: ${data.status.status}`
-  // });
 } 
 
 const selectedLeadStatus = computed(() => {
@@ -221,6 +222,5 @@ const selectedLeadStatus = computed(() => {
         </div>
       </main>
     </div>
-    <Toaster />
   </div>
 </template>
