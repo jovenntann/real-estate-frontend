@@ -4,7 +4,7 @@ import Pusher from 'pusher-js';
 
 export const usePusherEventsStore = defineStore('pusherEventsStore', () => {
   const { addMessageToList } = useMessagesStore();
-  const { upsertLeadMessage } = useLeadMessagesStore();
+  const { addLeadMessageToTopOfList, removeLeadMessageFromList } = useLeadMessagesStore();
 
   const pusher = new Pusher(useRuntimeConfig().public.pusherAppKey as string, {
     cluster: 'ap1',
@@ -16,7 +16,8 @@ export const usePusherEventsStore = defineStore('pusherEventsStore', () => {
     channel.bind('new-message', (data: any) => {
       console.log(data);
       addMessageToList(data);
-      upsertLeadMessage(data.lead)
+      removeLeadMessageFromList(data.lead)
+      addLeadMessageToTopOfList(data.lead)
     });
   }); 
 

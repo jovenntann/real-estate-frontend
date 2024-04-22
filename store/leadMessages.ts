@@ -68,20 +68,15 @@ export const useLeadMessagesStore = defineStore('leadMessagesStore', () => {
     leadMessagesList.value.push(leadMessage);
   }
 
-  /**
-   * This function is used to update a specific lead message in the leadMessagesList.
-   * It first finds the index of the lead message to be updated in the leadMessagesList.
-   * If the lead message is found (i.e., the index is not -1), it updates the lead message at that index.
-   * The update is done by merging the existing lead message with the updated lead message.
-   * The spread operator (...) is used to create a new object that contains properties of both the existing and updated lead messages.
-   * In case of a conflict, the properties of the updated lead message will overwrite those of the existing lead message.
-   * 
-   * @param updatedLeadMessage - The updated lead message object.
-   */
+  function addLeadMessageToTopOfList(leadMessage: LeadMessage) {
+    leadMessagesList.value.unshift(leadMessage);
+  }
+
   function updateLeadMessageInList(updatedLeadMessage: LeadMessage) {
     const index = leadMessagesList.value.findIndex(m => m.id === updatedLeadMessage.id);
     if (index > -1) {
-      leadMessagesList.value[index] = { ...leadMessagesList.value[index], ...updatedLeadMessage };
+      leadMessagesList.value.splice(index, 1);
+      leadMessagesList.value.unshift(updatedLeadMessage);
     }
   }
 
@@ -120,6 +115,7 @@ export const useLeadMessagesStore = defineStore('leadMessagesStore', () => {
     updateLeadMessageInList,
     leadMessagesList,
     upsertLeadMessage,
+    addLeadMessageToTopOfList,
     
     selectedLeadMessageId,
     setSelectedLeadMessageId,
