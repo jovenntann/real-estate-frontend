@@ -75,8 +75,7 @@ export const useLeadMessagesStore = defineStore('leadMessagesStore', () => {
   function updateLeadMessageInList(updatedLeadMessage: LeadMessage) {
     const index = leadMessagesList.value.findIndex(m => m.id === updatedLeadMessage.id);
     if (index > -1) {
-      leadMessagesList.value.splice(index, 1);
-      leadMessagesList.value.unshift(updatedLeadMessage);
+      leadMessagesList.value[index] = updatedLeadMessage;
     }
   }
 
