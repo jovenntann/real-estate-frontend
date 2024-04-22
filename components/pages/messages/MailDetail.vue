@@ -28,34 +28,38 @@ import type { Company, Status, NextAction, LastMessage, Lead } from '~/store/lea
 import { useLeadsStore } from '~/store/leads'
 const leadStore = useLeadsStore()
 const { lead } = storeToRefs(leadStore)
-const { addLead, getLead } = leadStore
+const { addLead, getLead, setLead } = leadStore
 
 const { toast } = useToast()
 const alertChange = async (statusId) => {
   const { public: { apiEndpoint } } = useRuntimeConfig();
-  try {
-    const response = await fetch(`${apiEndpoint}/agent/leads/${lead.value.id}`, {
-      method: 'PUT',
-      headers: {
-        'accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        "status": statusId
-      })
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    toast({
-      title: 'Status Updated',
-      description: `The new status is: ${data.status.status}`
-    });
-  } catch (error) {
-    console.error('An error occurred:', error);
+  const leadRecord = await $fetch(`${apiEndpoint}/agent/leads/${lead.value.id}`, {
+    method: 'PUT',
+    headers: {
+      'accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "status": statusId
+    })
+  });
+  if (leadRecord) {
+    setLead(leadRecord)
   }
-}
+  // toast({
+  //   title: 'Status Updated',
+  //   description: `The new status is: ${data.status.status}`
+  // });
+} 
+
+const selectedLeadStatus = computed(() => {
+  if (lead.value && lead.value.status) {
+    return lead.value.status.status;
+  }
+  return null;
+});
+
+
 </script>
 
 <template>
@@ -77,11 +81,11 @@ const alertChange = async (statusId) => {
                   <div class="grid gap-6">
                     <div class="grid gap-3">
                       <Label for="status">Lead Status</Label>
-                      <Select v-if="lead && lead.status && lead.status.status" @update:modelValue="alertChange($event)" v-model="lead.status.status">
+                      <Select v-if="lead && lead.status && lead.status.status" @update:modelValue="alertChange($event)" v-model="selectedLeadStatus">
                         <SelectTrigger aria-label="Select status">
                           <SelectValue placeholder="Selec value">
                             <div class="flex items-center gap-3">
-                              {{ lead.status.status }}
+                              {{ selectedLeadStatus }}
                             </div>
                           </SelectValue>
                         </SelectTrigger>

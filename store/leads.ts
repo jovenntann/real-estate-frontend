@@ -73,6 +73,10 @@ export const useLeadsStore = defineStore('leadsStore', () => {
     lead.value = newLead;
   }
 
+  function setLead(newLead: Lead) {
+    lead.value = newLead;
+  }
+
   function getLead(id: number) {
     const foundLead = leadsList.value.find(l => l.id === id);
     if (foundLead) {
@@ -80,5 +84,5 @@ export const useLeadsStore = defineStore('leadsStore', () => {
     }
   }
 
-  return { addLeadToList, removeLeadFromList, leadsList, lead, addLead, getLead };
+  return { addLeadToList, removeLeadFromList, leadsList, lead, addLead, getLead, setLead };
 });
