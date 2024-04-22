@@ -3,6 +3,7 @@ import { formatDistanceToNow } from 'date-fns'
 import type { Mail } from './data/mails'
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
+import { onMounted, ref, nextTick } from 'vue'
 
 interface MailListProps {
   items: Mail[]
@@ -64,6 +65,43 @@ const handleButtonClick = async (leadMessageId: number, leadMessage: LeadMessage
   setSelectedLead(leadMessage)
   fetchLeadRecord(leadMessageId);
 }
+
+// Infinite Scroll
+const loadMoreRef = ref(null);
+const isLoadingMoreMessages = ref(false)
+const nextPage = ref(2)
+
+const loadMoreLeadMessages = async () => {
+  if (isLoadingMoreMessages.value) return;
+  isLoadingMoreMessages.value = true;
+  try {
+    // Fetch more lead messages from the server
+    const moreLeadMessages = await $fetch(`${apiEndpoint}/agent/leads/messages?page=${nextPage.value}`);
+    if (moreLeadMessages) {
+      // Prepend the new lead messages to the existing list
+      setLeadMessages([...leadMessagesList.value, ...moreLeadMessages.results]);
+      nextPage.value++; // Increment nextPage for the next load
+    }
+  } catch (error: any) {
+    if (error.response) {
+      // Stop loading more lead messages when a 404 status code is returned
+      isLoadingMoreMessages.value = false;
+    }
+  } finally {
+    isLoadingMoreMessages.value = false;
+  }
+}
+
+onMounted(() => {
+  // Infinite Scroll
+  const observer = new IntersectionObserver(async ([entry]) => {
+    if (entry.isIntersecting) {
+      loadMoreMessages();
+    }
+  }, { threshold: 1 });
+
+  observer.observe(loadMoreRef.value);
+});
 </script>
 
 <template>
@@ -121,6 +159,13 @@ const handleButtonClick = async (leadMessageId: number, leadMessage: LeadMessage
             </div>
           </div>
         </button>
+        <div ref="loadMoreRef" class="text-center py-2">
+          <Button class="w-full" :disabled="isLoadingMoreMessages" @click="loadMoreLeadMessages">
+            <Loader2 v-if="isLoadingMoreMessages" class="w-4 h-4 mr-2 animate-spin" />
+            <span v-if="!isLoadingMoreMessages">Load More</span>
+            <span v-else>Loading...</span>  
+          </Button>
+        </div>
       </TransitionGroup>
     </div>
   </ScrollArea>
@@ -142,4 +187,4 @@ const handleButtonClick = async (leadMessageId: number, leadMessage: LeadMessage
 .list-leave-active {
   position: absolute;
 }
-</style>~/store/leadMessages~/store/leadMessages
+</style>
