@@ -38,7 +38,7 @@ import { useLayoutStore } from '~/store/layout';
 const layoutStore = useLayoutStore()
 const { setToastMessage } = layoutStore;
 
-const alertChange = async (statusId) => {
+const leadStatusChange = async (statusId) => {
   const { public: { apiEndpoint } } = useRuntimeConfig();
   const leadRecord = await $fetch(`${apiEndpoint}/agent/leads/${lead.value.id}`, {
     method: 'PUT',
@@ -58,7 +58,36 @@ const alertChange = async (statusId) => {
       description: `Lead status has been updated to ${leadRecord.status.status}`
     });
   }
-} 
+}
+
+const nextActionChange = async (actionId) => {
+  const { public: { apiEndpoint } } = useRuntimeConfig();
+  const leadRecord = await $fetch(`${apiEndpoint}/agent/leads/${lead.value.id}`, {
+    method: 'PUT',
+    headers: {
+      'accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "next_action": actionId
+    })
+  });
+  if (leadRecord) {
+    setLead(leadRecord)
+    updateLeadMessageInList(leadRecord)
+    setToastMessage({
+      title: `${leadRecord.first_name} ${leadRecord.last_name} updated`,
+      description: `Lead next action has been updated to ${leadRecord.next_action.action}`
+    });
+  }
+}
+
+const selectedNextAction = computed(() => {
+  if (lead.value && lead.value.next_action) {
+    return lead.value.next_action.action;
+  }
+  return null;
+});
 
 const selectedLeadStatus = computed(() => {
   if (lead.value && lead.value.status) {
@@ -66,7 +95,6 @@ const selectedLeadStatus = computed(() => {
   }
   return null;
 });
-
 
 </script>
 
@@ -89,7 +117,7 @@ const selectedLeadStatus = computed(() => {
                   <div class="grid gap-6">
                     <div class="grid gap-3">
                       <Label for="status">Lead Status</Label>
-                      <Select v-if="lead && lead.status && lead.status.status" @update:modelValue="alertChange($event)" v-model="selectedLeadStatus">
+                      <Select v-if="lead && lead.status && lead.status.status" @update:modelValue="leadStatusChange($event)" v-model="selectedLeadStatus">
                         <SelectTrigger aria-label="Select status">
                           <SelectValue placeholder="Selec value">
                             <div class="flex items-center gap-3">
@@ -113,16 +141,20 @@ const selectedLeadStatus = computed(() => {
                   <div class="grid gap-6">
                     <div class="grid gap-3">
                       <Label for="status">Next Action</Label>
-                      <Select v-if="lead && lead.next_action">
-                        <SelectTrigger :id="lead.next_action.id" aria-label="Select status">
-                          <SelectValue :placeholder="lead.next_action.action" />
+                      <Select v-if="lead && lead.next_action" @update:modelValue="nextActionChange($event)" v-model="selectedNextAction">
+                        <SelectTrigger aria-label="Select next action">
+                          <SelectValue placeholder="Select value">
+                            <div class="flex items-center gap-3">
+                              {{ selectedNextAction }}
+                            </div>
+                          </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem 
-                            v-for="status in company.lead_next_actions" 
-                            :key="status.id.toString()" 
-                            :value="status.id.toString()">
-                            {{ status.action }}
+                            v-for="action in company.lead_next_actions" 
+                            :key="action.id.toString()" 
+                            :value="action.id.toString()">
+                            {{ action.action }}
                           </SelectItem>
                         </SelectContent>
                       </Select>
