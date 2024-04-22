@@ -50,6 +50,10 @@ const status: StatusType[] = [
   }
 ];
 
+const alertChange = (value) => {
+  alert(`The new value is: ${value}`);
+};
+
 </script>
 
 <template>
@@ -71,7 +75,7 @@ const status: StatusType[] = [
                   <div class="grid gap-6">
                     <div class="grid gap-3">
                       <Label for="status">Lead Status</Label>
-                      <Select v-if="lead && lead.status">
+                      <Select v-if="lead && lead.status" @update:modelValue="alertChange">
                         <SelectTrigger :id="lead.status.id" aria-label="Select status">
                           <SelectValue :placeholder="lead.status.status" />
                         </SelectTrigger>
