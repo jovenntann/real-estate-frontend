@@ -77,7 +77,7 @@ const alertChange = async (statusId) => {
                   <div class="grid gap-6">
                     <div class="grid gap-3">
                       <Label for="status">Lead Status</Label>
-                      <Select v-if="lead && lead.status" @update:modelValue="alertChange($event)" v-model="lead.status.status">
+                      <Select v-if="lead && lead.status && lead.status.status" @update:modelValue="alertChange($event)" v-model="lead.status.status">
                         <SelectTrigger aria-label="Select status">
                           <SelectValue placeholder="Selec value">
                             <div class="flex items-center gap-3">
