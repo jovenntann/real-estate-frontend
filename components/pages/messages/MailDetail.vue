@@ -48,6 +48,7 @@ const alertChange = async (statusId) => {
     title: 'Status Updated',
     description: `The new status is: ${data.status.status}`
   });
+  lead.status.status = data.status.status
 };
 </script>
 
@@ -70,7 +71,7 @@ const alertChange = async (statusId) => {
                   <div class="grid gap-6">
                     <div class="grid gap-3">
                       <Label for="status">Lead Status</Label>
-                      <Select v-if="lead && lead.status" @update:modelValue="alertChange(lead.status.id)" v-model="lead.status.status">
+                      <Select v-if="lead && lead.status" @update:modelValue="alertChange($event)" v-model="lead.status.status">
                         <SelectTrigger aria-label="Select status">
                           <SelectValue placeholder="Select an account">
                             <div class="flex items-center gap-3">
@@ -83,8 +84,8 @@ const alertChange = async (statusId) => {
                         <SelectContent>
                           <SelectItem 
                             v-for="status in company.lead_statuses" 
-                            :key="status.status" 
-                            :value="status.status">
+                            :key="status.id" 
+                            :value="status.id">
                             {{ status.status }}
                           </SelectItem>
                         </SelectContent>
