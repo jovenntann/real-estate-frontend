@@ -146,11 +146,11 @@ onMounted(() => {
           </div>
           <div class="flex items-center gap-2">
             <div v-if="leadMessage.status !== null && leadMessage.status.color">
-              <Badge :class="leadMessage.status.color">
+              <Badge :class="leadMessage.status.color" :id="'badge-' + leadMessage.id">
                 {{ leadMessage.status.status }}
               </Badge>
             </div>
-            <div v-if="leadMessage.next_action !== null && leadMessage.next_action.color">
+            <div v-if="leadMessage.next_action !== null && leadMessage.next_action.color && leadMessage.next_action.action !== 'None'">
               <Badge :class="leadMessage.next_action.color">
                 {{ leadMessage.next_action.action }}
               </Badge>
