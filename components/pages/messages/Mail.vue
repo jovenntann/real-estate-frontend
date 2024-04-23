@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {
   Search,
+  ListFilter
 } from 'lucide-vue-next'
 
 import { computed, ref } from 'vue'
@@ -103,7 +104,100 @@ function onExpand() {
               </div>
             </form>
           </div>
-          <TabsContent value="all" class="m-0">
+          <div class="flex ml-4 mb-2 space-x-1">
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button variant="outline" size="sm" class="h-7 gap-1 rounded-md px-3">
+                  <ListFilter class="h-3.5 w-3.5" />
+                  <span class="sr-only sm:not-sr-only">Lead Status</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <div class="items-top flex space-x-2">
+                    <Checkbox id="terms1" />
+                    <label
+                      for="terms2"
+                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      Fulfilled
+                    </label>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <div class="items-top flex space-x-2">
+                    <Checkbox id="terms1" />
+                    <label
+                      for="terms2"
+                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      Declined
+                    </label>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <div class="items-top flex space-x-2">
+                    <Checkbox id="terms1" />
+                    <label
+                      for="terms2"
+                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      Refunded
+                    </label>
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button variant="outline" size="sm" class="h-7 gap-1 rounded-md px-3">
+                  <ListFilter class="h-3.5 w-3.5" />
+                  <span class="sr-only sm:not-sr-only">Next Action</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <div class="items-top flex space-x-2">
+                    <Checkbox id="terms1" />
+                    <label
+                      for="terms2"
+                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      Fulfilled
+                    </label>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <div class="items-top flex space-x-2">
+                    <Checkbox id="terms1" />
+                    <label
+                      for="terms2"
+                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      Declined
+                    </label>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <div class="items-top flex space-x-2">
+                    <Checkbox id="terms1" />
+                    <label
+                      for="terms2"
+                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      Refunded
+                    </label>
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          <Separator />
+          <TabsContent value="all" class="mt-2">
             <MailList 
               v-model:selected-mail="selectedMail" 
               :items="filteredMailList" 
