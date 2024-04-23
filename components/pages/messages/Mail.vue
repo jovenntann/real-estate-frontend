@@ -78,7 +78,7 @@ function onExpand() {
     <ResizablePanelGroup
       id="resize-panel-group-1"
       direction="horizontal"
-      class="h-full items-stretch" :style="{ maxHeight: 'calc(100vh - 120px)' }"
+      class="h-full items-stretch" :style="{ maxHeight: 'calc(100vh - 70px)' }"
     >
       <ResizablePanel id="resize-panel-1" :default-size="defaultLayout[0]" :min-size="10" :max-size="30">
         <Tabs default-value="all">
@@ -116,7 +116,7 @@ function onExpand() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <div class="items-top flex space-x-2">
-                    <Checkbox id="terms1" />
+                    <Checkbox id="terms1" :checked="'1'" @update:checked="handleChange" />
                     <label
                       for="terms2"
                       class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

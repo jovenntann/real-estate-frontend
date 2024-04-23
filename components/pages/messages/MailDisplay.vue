@@ -314,7 +314,7 @@
         <Separator />
       
         <!-- TODO: This need to be browser side compatible -->
-        <ScrollArea class="h-screen flex max-h-[70vh]">
+        <ScrollArea class="h-screen flex max-h-[75vh]">
           <div class="flex-1 flex flex-col gap-2 m-4">
             <div ref="loadMoreRef" class="text-center py-2">
               <Button class="w-full" :disabled="isLoadingMoreMessages" @click="loadMoreMessages">
