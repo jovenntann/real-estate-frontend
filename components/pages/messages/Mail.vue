@@ -96,15 +96,14 @@ function onExpand() {
             </TabsList>
           </div>
           <Separator />
-          <div class="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div class="bg-background/95 p-2 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <form>
               <div class="relative">
                 <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
                 <Input v-model="searchValue" placeholder="Search" class="pl-8" />
               </div>
             </form>
-          </div>
-          <div class="flex ml-4 mb-2 space-x-1">
+            <div class="flex mt-2 space-x-1">
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
                 <Button variant="outline" size="sm" class="h-7 gap-1 rounded-md px-3">
@@ -195,6 +194,7 @@ function onExpand() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+          </div>
           </div>
           <Separator />
           <TabsContent value="all" class="mt-2">
