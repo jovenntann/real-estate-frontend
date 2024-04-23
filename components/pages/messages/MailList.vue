@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { Loader2 } from 'lucide-vue-next'
 import { formatDistanceToNow } from 'date-fns'
 import type { Mail } from './data/mails'
 import { cn } from '@/lib/utils'
