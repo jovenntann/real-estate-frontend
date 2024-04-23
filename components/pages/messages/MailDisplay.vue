@@ -359,7 +359,7 @@
                 v-model="message"
                 :placeholder="`Reply ${selectedLead?.first_name}...`"
                 :disabled="isLoading"
-                @keydown.enter.prevent="sendMessage"
+                @keydown.enter.prevent="($event) => { if (!$event.shiftKey) sendMessage() }"
               />
               <div class="flex items-center">
                 <Label
