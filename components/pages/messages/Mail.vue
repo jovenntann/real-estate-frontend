@@ -71,6 +71,15 @@ function onCollapse() {
 function onExpand() {
   isCollapsed.value = false
 }
+
+
+const selectedLeadStatus = ref<string | undefined>('')
+
+watch(selectedLeadStatus, (newValue, oldValue) => {
+  alert(`The selected lead status has been changed from ${oldValue} to ${newValue}`);
+});
+
+
 </script>
 
 <template>  
@@ -104,96 +113,42 @@ function onExpand() {
               </div>
             </form>
             <div class="flex mt-2 space-x-1">
-            <DropdownMenu>
-              <DropdownMenuTrigger as-child>
-                <Button variant="outline" size="sm" class="h-7 gap-1 rounded-md px-3">
-                  <ListFilter class="h-3.5 w-3.5" />
-                  <span class="sr-only sm:not-sr-only">Lead Status</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <div class="items-top flex space-x-2">
-                    <Checkbox id="terms1" :checked="'1'" @update:checked="handleChange" />
-                    <label
-                      for="terms2"
-                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Fulfilled
-                    </label>
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <div class="items-top flex space-x-2">
-                    <Checkbox id="terms1" />
-                    <label
-                      for="terms2"
-                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Declined
-                    </label>
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <div class="items-top flex space-x-2">
-                    <Checkbox id="terms1" />
-                    <label
-                      for="terms2"
-                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Refunded
-                    </label>
-                  </div>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <DropdownMenu>
-              <DropdownMenuTrigger as-child>
-                <Button variant="outline" size="sm" class="h-7 gap-1 rounded-md px-3">
-                  <ListFilter class="h-3.5 w-3.5" />
-                  <span class="sr-only sm:not-sr-only">Next Action</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <div class="items-top flex space-x-2">
-                    <Checkbox id="terms1" />
-                    <label
-                      for="terms2"
-                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Fulfilled
-                    </label>
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <div class="items-top flex space-x-2">
-                    <Checkbox id="terms1" />
-                    <label
-                      for="terms2"
-                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Declined
-                    </label>
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <div class="items-top flex space-x-2">
-                    <Checkbox id="terms1" />
-                    <label
-                      for="terms2"
-                      class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Refunded
-                    </label>
-                  </div>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              <Select v-model="selectedLeadStatus">
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Lead Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="0">
+                      All
+                    </SelectItem>
+                    <SelectItem value="1">
+                      Interested
+                    </SelectItem>
+                    <SelectItem value="2">
+                      Qualified
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Next Action" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="all">
+                      All
+                    </SelectItem>
+                    <SelectItem value="apple">
+                      Follow-up
+                    </SelectItem>
+                    <SelectItem value="waiting">
+                      Waiting
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
           </div>
           </div>
           <Separator />
