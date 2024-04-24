@@ -10,8 +10,34 @@ import type { Mail } from './data/mails'
 import MailList from './MailList.vue'
 import MailDisplay from './MailDisplay.vue'
 import MailDetail from './MailDetail.vue'
-
 import CardChat from './CardChat.vue'
+
+const { public: { apiEndpoint } } = useRuntimeConfig();
+
+// Company
+import { useCompanyStore } from '~/store/company';
+const companyStore = useCompanyStore()
+const { company } = storeToRefs(companyStore)
+
+// Lead Messages
+import { useLeadMessagesStore } from '~/store/leadMessages'
+import type { LeadMessagesResponse, LeadMessage } from '~/store/leadMessages'
+const leadMessagesStore = useLeadMessagesStore()
+const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, setSelectedLeadMessageId, setSelectedLead, setSelectedLeadStatus, setSelectedLeadNextAction } = leadMessagesStore
+const { leadMessagesList, selectedLeadMessageId, selectedLeadNextAction, selectedLeadStatus } = storeToRefs(leadMessagesStore)
+
+// Lead 
+import { useLeadsStore } from '~/store/leads'
+const leadStore = useLeadsStore()
+const { lead } = storeToRefs(leadStore)
+const { addLead, getLead } = leadStore
+
+const fetchLeadRecord = async (leadId: number) => {
+  const leadRecord = await $fetch(`${apiEndpoint}/agent/leads/${leadId}`)
+  if (leadRecord) {
+    addLead(leadRecord);
+  }
+}
 
 interface MailProps {
   accounts: {
@@ -73,10 +99,32 @@ function onExpand() {
 }
 
 
-const selectedLeadStatus = ref<string | undefined>('')
+async function updateLeadStatusAndAction(selectedLeadStatus: string, selectedLeadNextAction: string) {
+  const leadMessages = await $fetch(`${apiEndpoint}/agent/leads/messages?status__status=${selectedLeadStatus}&next_action__action=${selectedLeadNextAction}`);
+  console.log(leadMessages)
+  if (leadMessages) {
+    // Set Lead Messages
+    setLeadMessages(leadMessages.results);
+    // Let us set the first value from results
+    setSelectedLeadMessageId(leadMessages.results[0].id)
+    fetchLeadRecord(leadMessages.results[0].id);
+    // Set Selected Lead for Lead Details
+    setSelectedLead(leadMessages.results[0])
+  }
+}
 
-watch(selectedLeadStatus, (newValue, oldValue) => {
-  alert(`The selected lead status has been changed from ${oldValue} to ${newValue}`);
+
+const localSelectedLeadStatus = ref<string | undefined>('')
+const localSelectedLeadNextAction = ref<string | undefined>('')
+
+watch(localSelectedLeadStatus, async (newValue, oldValue) => {
+  setSelectedLeadStatus(newValue)
+  await updateLeadStatusAndAction(newValue, localSelectedLeadNextAction.value);
+});
+
+watch(localSelectedLeadNextAction, async (newValue, oldValue) => {
+  setSelectedLeadNextAction(newValue)
+  await updateLeadStatusAndAction(localSelectedLeadStatus.value, newValue);
 });
 
 
@@ -113,38 +161,30 @@ watch(selectedLeadStatus, (newValue, oldValue) => {
               </div>
             </form>
             <div class="flex mt-2 space-x-1">
-              <Select v-model="selectedLeadStatus">
+              <Select v-model="localSelectedLeadStatus">
                 <SelectTrigger>
                   <SelectValue placeholder="Select Lead Status" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="0">
-                      All
-                    </SelectItem>
-                    <SelectItem value="1">
-                      Interested
-                    </SelectItem>
-                    <SelectItem value="2">
-                      Qualified
+                    <SelectItem 
+                      v-for="status in company.lead_statuses" 
+                      :value="status.status">
+                      {{ status.status }}
                     </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <Select>
+              <Select  v-model="localSelectedLeadNextAction">
                 <SelectTrigger>
                   <SelectValue placeholder="Select Next Action" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="all">
-                      All
-                    </SelectItem>
-                    <SelectItem value="apple">
-                      Follow-up
-                    </SelectItem>
-                    <SelectItem value="waiting">
-                      Waiting
+                    <SelectItem 
+                      v-for="action in company.lead_next_actions" 
+                      :value="action.action">
+                      {{ action.action }}
                     </SelectItem>
                   </SelectGroup>
                 </SelectContent>

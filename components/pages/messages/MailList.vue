@@ -22,7 +22,7 @@ import { useLeadMessagesStore } from '~/store/leadMessages'
 import type { LeadMessagesResponse, LeadMessage } from '~/store/leadMessages'
 const leadMessagesStore = useLeadMessagesStore()
 const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, setSelectedLeadMessageId, setSelectedLead } = leadMessagesStore
-const { leadMessagesList, selectedLeadMessageId } = storeToRefs(leadMessagesStore)
+const { leadMessagesList, selectedLeadMessageId, selectedLeadNextAction, selectedLeadStatus } = storeToRefs(leadMessagesStore)
 
 // Lead 
 import { useLeadsStore } from '~/store/leads'
@@ -77,7 +77,7 @@ const loadMoreLeadMessages = async () => {
   isLoadingMoreMessages.value = true;
   try {
     // Fetch more lead messages from the server
-    const moreLeadMessages = await $fetch(`${apiEndpoint}/agent/leads/messages?page=${nextPage.value}`);
+    const moreLeadMessages = await $fetch(`${apiEndpoint}/agent/leads/messages?page=${nextPage.value}&status__status=${selectedLeadStatus.value ? selectedLeadStatus.value : ''}&next_action__action=${selectedLeadNextAction.value ? selectedLeadNextAction.value : ''}`);
     if (moreLeadMessages) {
       // Append the new lead messages to the existing list
       setLeadMessages([...leadMessagesList.value, ...moreLeadMessages.results]);

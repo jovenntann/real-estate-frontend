@@ -60,6 +60,10 @@ export const useLeadMessagesStore = defineStore('leadMessagesStore', () => {
   const selectedLeadMessageId = ref<number | null>(null);
   const selectedLead = ref<LeadMessage | null>(null);
 
+  // Filters
+  const selectedLeadNextAction = ref<string | null>(null);
+  const selectedLeadStatus = ref<string | null>(null);
+
   function setLeadMessages(leadMessages: LeadMessage[]) {
     leadMessagesList.value = leadMessages;
   }
@@ -107,6 +111,15 @@ export const useLeadMessagesStore = defineStore('leadMessagesStore', () => {
     }
   }
 
+  // Filters
+  function setSelectedLeadStatus(leadStatus: string | null) {
+    selectedLeadStatus.value = leadStatus;
+  }
+
+  function setSelectedLeadNextAction(leadNextAction: string | null) {
+    selectedLeadNextAction.value = leadNextAction;
+  }
+
   return { 
     setLeadMessages, 
     addLeadMessageToList, 
@@ -119,6 +132,12 @@ export const useLeadMessagesStore = defineStore('leadMessagesStore', () => {
     selectedLeadMessageId,
     setSelectedLeadMessageId,
     removeSelectedLeadMessageId,
+
+    // Filters
+    selectedLeadNextAction,
+    selectedLeadStatus,
+    setSelectedLeadStatus,
+    setSelectedLeadNextAction,
 
     selectedLead,
     setSelectedLead
