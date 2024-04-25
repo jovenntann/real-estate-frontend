@@ -21,7 +21,7 @@ const { public: { apiEndpoint } } = useRuntimeConfig();
 import { useLeadMessagesStore } from '~/store/leadMessages'
 import type { LeadMessagesResponse, LeadMessage } from '~/store/leadMessages'
 const leadMessagesStore = useLeadMessagesStore()
-const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, setSelectedLeadMessageId, setSelectedLead } = leadMessagesStore
+const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, setSelectedLeadMessageId, setSelectedLead, setSelectedLeadStatus, setSelectedLeadNextAction, setNextPage } = leadMessagesStore
 const { leadMessagesList, selectedLeadMessageId, selectedLeadNextAction, selectedLeadStatus, nextPage } = storeToRefs(leadMessagesStore)
 
 // Lead 
@@ -93,6 +93,10 @@ const loadMoreLeadMessages = async () => {
 }
 
 onMounted(() => {
+  // Reset Pagination and Filter on Page load
+  setNextPage(2)
+  setSelectedLeadStatus(null)
+  setSelectedLeadNextAction(null)
   // alert("Browser Alert: The page has been loaded successfully!");
   const observer = new IntersectionObserver(async ([entry]) => {
     if (entry.isIntersecting) {
