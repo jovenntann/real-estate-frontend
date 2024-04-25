@@ -23,8 +23,8 @@ const { company } = storeToRefs(companyStore)
 import { useLeadMessagesStore } from '~/store/leadMessages'
 import type { LeadMessagesResponse, LeadMessage } from '~/store/leadMessages'
 const leadMessagesStore = useLeadMessagesStore()
-const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, setSelectedLeadMessageId, setSelectedLead, setSelectedLeadStatus, setSelectedLeadNextAction } = leadMessagesStore
-const { leadMessagesList, selectedLeadMessageId, selectedLeadNextAction, selectedLeadStatus } = storeToRefs(leadMessagesStore)
+const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, setSelectedLeadMessageId, setSelectedLead, setSelectedLeadStatus, setSelectedLeadNextAction, setNextPage } = leadMessagesStore
+const { leadMessagesList, selectedLeadMessageId, selectedLeadNextAction, selectedLeadStatus, nextPage } = storeToRefs(leadMessagesStore)
 
 // Lead 
 import { useLeadsStore } from '~/store/leads'
@@ -100,6 +100,7 @@ function onExpand() {
 
 
 async function updateLeadStatusAndAction(selectedLeadStatus: string, selectedLeadNextAction: string) {
+  setNextPage(2)
   const leadMessages = await $fetch(`${apiEndpoint}/agent/leads/messages?status__status=${selectedLeadStatus}&next_action__action=${selectedLeadNextAction}`);
   console.log(leadMessages)
   if (leadMessages) {

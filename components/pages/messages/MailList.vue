@@ -16,13 +16,13 @@ const selectedMail = defineModel<string>('selectedMail', { required: false })
 
 import { storeToRefs } from 'pinia'
 const { public: { apiEndpoint } } = useRuntimeConfig();
-
+  
 // Lead Messages
 import { useLeadMessagesStore } from '~/store/leadMessages'
 import type { LeadMessagesResponse, LeadMessage } from '~/store/leadMessages'
 const leadMessagesStore = useLeadMessagesStore()
 const { setLeadMessages, addLeadMessageToList, removeLeadMessageFromList, setSelectedLeadMessageId, setSelectedLead } = leadMessagesStore
-const { leadMessagesList, selectedLeadMessageId, selectedLeadNextAction, selectedLeadStatus } = storeToRefs(leadMessagesStore)
+const { leadMessagesList, selectedLeadMessageId, selectedLeadNextAction, selectedLeadStatus, nextPage } = storeToRefs(leadMessagesStore)
 
 // Lead 
 import { useLeadsStore } from '~/store/leads'
@@ -70,7 +70,6 @@ const handleButtonClick = async (leadMessageId: number, leadMessage: LeadMessage
 // Infinite Scroll
 const loadMoreRef = ref(null);
 const isLoadingMoreMessages = ref(false)
-const nextPage = ref(2)
 
 const loadMoreLeadMessages = async () => {
   if (isLoadingMoreMessages.value) return;
@@ -94,6 +93,7 @@ const loadMoreLeadMessages = async () => {
 }
 
 onMounted(() => {
+  // alert("Browser Alert: The page has been loaded successfully!");
   const observer = new IntersectionObserver(async ([entry]) => {
     if (entry.isIntersecting) {
       await loadMoreLeadMessages();
